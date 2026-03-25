@@ -65,7 +65,7 @@ const FAQItem = ({ q, a }: { q: string; a: string }) => {
 // --- Main Sections ---
 
 const Hero = () => (
-  <section className="relative pt-32 lg:pt-40 pb-24 lg:pb-32 overflow-hidden bg-slate-900 rounded-b-[4rem] lg:rounded-b-[6rem] z-10">
+  <section className="relative pt-12 lg:pt-40 pb-24 lg:pb-32 overflow-hidden bg-slate-900 rounded-b-[4rem] lg:rounded-b-[6rem] z-10">
     <div className="max-w-7xl mx-auto px-6 w-full relative z-20">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-4 items-center">
         <div className="space-y-8 animate-in fade-in duration-1000">
@@ -127,7 +127,7 @@ const Hero = () => (
           </div>
         </div>
 
-        <div className="relative hidden lg:flex justify-center items-end pt-10 animate-in fade-in zoom-in duration-1000 delay-150">
+        <div className="relative flex justify-center items-end pt-0 lg:pt-10 animate-in fade-in zoom-in duration-1000 delay-150 order-first lg:order-last">
           <div className="relative w-full max-w-[400px] aspect-[3/4] z-10">
             <Image
               src="/profile.webp"
@@ -139,7 +139,7 @@ const Hero = () => (
             />
 
             {/* Floating Badge overlay for premium feel */}
-            <div className="absolute bottom-8 -right-4 lg:-right-8 z-20 bg-white p-4 rounded-2xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] flex items-center gap-4 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-500 transform hover:-translate-y-1 transition-transform">
+            <div className="absolute bottom-8 right-0 lg:-right-8 z-20 bg-white p-4 rounded-2xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] flex items-center gap-4 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-500 transform hover:-translate-y-1 transition-transform">
               <div className="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center shrink-0">
                 <Award className="w-6 h-6" />
               </div>

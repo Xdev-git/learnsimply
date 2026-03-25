@@ -79,12 +79,12 @@ export const Navbar = () => {
 
         {/* Mobile menu button */}
         <button 
-          className="md:hidden text-slate-800 p-2"
+          className="md:hidden p-2"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
-          <div className="w-6 h-0.5 bg-slate-800 mb-1.5"></div>
-          <div className="w-6 h-0.5 bg-slate-800 mb-1.5"></div>
-          <div className="w-6 h-0.5 bg-slate-800"></div>
+          <div className={`w-6 h-0.5 mb-1.5 transition-colors ${isScrolled ? "bg-slate-800" : "bg-white"}`}></div>
+          <div className={`w-6 h-0.5 mb-1.5 transition-colors ${isScrolled ? "bg-slate-800" : "bg-white"}`}></div>
+          <div className={`w-6 h-0.5 transition-colors ${isScrolled ? "bg-slate-800" : "bg-white"}`}></div>
         </button>
       </div>
 
