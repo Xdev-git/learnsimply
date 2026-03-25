@@ -68,7 +68,7 @@ const Hero = () => (
   <section className="relative pt-12 lg:pt-40 pb-24 lg:pb-32 overflow-hidden bg-slate-900 rounded-b-[4rem] lg:rounded-b-[6rem] z-10">
     <div className="max-w-7xl mx-auto px-6 w-full relative z-20">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-4 items-center">
-        <div className="space-y-8 animate-in fade-in duration-1000">
+        <div className="space-y-8 animate-in fade-in duration-1000 text-center lg:text-left flex flex-col items-center lg:items-start">
           <div className="space-y-4">
             <span className="text-xs font-semibold uppercase tracking-widest text-secondary inline-block border border-secondary/30 bg-secondary/10 px-3 py-1 rounded-none shadow-none backdrop-blur-sm">
               Professional Education
@@ -85,7 +85,7 @@ const Hero = () => (
             A 16-module online program designed for gynecologists and trainees to develop clear surgical understanding and practical decision-making in vaginal procedures.
           </p>
 
-          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-none p-4 flex items-center gap-4 shadow-none">
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-none p-4 flex items-center justify-center lg:justify-start gap-4 shadow-none w-full max-w-md mx-auto lg:mx-0">
             <div className="w-12 h-12 bg-white/20 rounded-none flex items-center justify-center text-white shrink-0">
               <CheckCircle2 className="w-6 h-6" />
             </div>
@@ -95,21 +95,21 @@ const Hero = () => (
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-fit mx-auto lg:mx-0 text-left">
             {[
               "Step-by-step techniques",
               "Real operative insights",
               "Complication management",
               "Designed for busy clinicians"
             ].map((text, i) => (
-              <div key={i} className="flex items-center gap-3 text-sm text-slate-100 font-medium drop-shadow-sm">
+              <div key={i} className="flex items-center justify-start gap-3 text-sm text-slate-100 font-medium drop-shadow-sm">
                 <Check className="w-4 h-4 text-secondary shrink-0" />
                 <span>{text}</span>
               </div>
             ))}
           </div>
 
-          <div className="space-y-4 pt-4">
+            <div className="flex flex-col items-center lg:items-start space-y-4 pt-4">
             <a
               href="#registration"
               onClick={(e) => {
@@ -187,7 +187,7 @@ const CourseOverviewMerged = () => (
     <div className="max-w-7xl mx-auto px-6 w-full">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         <FadeInWhenVisible>
-          <div className="space-y-8">
+          <div className="space-y-8 text-center lg:text-left flex flex-col items-center lg:items-start">
             <div className="space-y-4">
               <span className="text-primary text-xs font-semibold uppercase tracking-widest">Structured Approach</span>
               <h2 className="text-3xl lg:text-4xl font-bold font-serif text-slate-900 leading-tight">A Structured Approach to Vaginal Surgery</h2>
@@ -197,13 +197,13 @@ const CourseOverviewMerged = () => (
             </p>
             <div className="p-6 bg-white rounded-none border-l-4 border-primary shadow-none space-y-4 hover:bg-slate-50 transition-colors">
               <p className="text-sm font-semibold text-slate-800">The course focuses on practical clinical application, not theoretical discussion. Participants will learn:</p>
-              <ul className="space-y-3">
+              <ul className="space-y-3 w-fit mx-auto lg:mx-0 text-left">
                 {[
                   "How to select appropriate cases",
                   "How to perform procedures with clarity",
                   "How to manage intra-operative challenges confidently"
                 ].map((it, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-slate-600">
+                  <li key={i} className="flex items-start justify-start gap-3 text-sm text-slate-600">
                     <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                     <span>{it}</span>
                   </li>
@@ -319,7 +319,7 @@ const OutcomeSection = () => (
           { title: "Practical Insights", desc: "Avoid common mistakes, improve efficiency, and learn real surgical pearls.", icon: Award, color: "bg-primary", shadow: "shadow-primary/30" }
         ].map((box, i) => (
           <FadeInWhenVisible delay={i * 100} key={i}>
-            <div className="p-8 bg-white rounded-[2rem] shadow-[0_15px_40px_-15px_rgba(0,0,0,0.1)] border-none flex items-start gap-6 hover:-translate-y-1 transition-transform duration-300">
+            <div className="p-8 bg-white rounded-[2rem] shadow-[0_15px_40px_-15px_rgba(0,0,0,0.1)] border-none flex flex-col md:flex-row items-center md:items-start text-center md:text-left gap-6 hover:-translate-y-1 transition-transform duration-300">
               <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-lg ${box.color} ${box.shadow}`}>
                 <box.icon className="w-7 h-7" />
               </div>
@@ -347,12 +347,12 @@ const AudienceSection = () => (
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <FadeInWhenVisible delay={100}>
-          <div className="h-full p-10 bg-slate-50 border border-slate-200 rounded-none space-y-8 relative hover:bg-white hover:border-slate-300 transition-colors">
+          <div className="h-full p-10 bg-slate-50 border border-slate-200 rounded-none space-y-8 relative hover:bg-white hover:border-slate-300 transition-colors text-center lg:text-left flex flex-col items-center lg:items-start">
             <div className="flex items-center gap-3 border-b border-slate-200 pb-4">
               <CheckCircle2 className="w-6 h-6 text-emerald-600" />
               <h4 className="text-xl font-bold text-slate-900">Professional Audience</h4>
             </div>
-            <ul className="space-y-4 text-sm font-medium text-slate-800">
+            <ul className="space-y-4 text-sm font-medium text-slate-800 w-fit mx-auto lg:mx-0 text-left">
               {[
                 "Practicing Obstetricians & Gynecologists",
                 "DGO / MS / DNB Residents",
@@ -395,7 +395,7 @@ const AboutAcademySection = () => (
   <section className="py-16 md:py-24 bg-slate-950 border-y-[6px] border-primary relative">
     <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
       <FadeInWhenVisible>
-        <div className="space-y-6">
+        <div className="space-y-6 text-center lg:text-left flex flex-col items-center lg:items-start">
           <span className="text-secondary text-xs font-bold uppercase tracking-widest block bg-secondary/10 inline-block px-4 py-1.5 rounded-none border border-secondary/20">The Foundation</span>
           <h2 className="text-3xl lg:text-4xl font-bold font-serif !text-white drop-shadow-lg" style={{ color: '#ffffff' }}>
             About Learn Simply Academy
@@ -433,7 +433,7 @@ const TrustAndObjection = () => (
   <section id="faq" className="py-16 md:py-24 bg-white border-t border-slate-100">
     <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
       <FadeInWhenVisible>
-        <div className="space-y-10">
+        <div className="space-y-10 text-center lg:text-left flex flex-col items-center lg:items-start">
           <div className="space-y-4">
             <span className="text-primary text-xs font-semibold uppercase tracking-widest block">Trust & Verification</span>
             <h2 className="text-3xl lg:text-4xl font-bold font-serif text-slate-900">Certification</h2>
@@ -443,9 +443,9 @@ const TrustAndObjection = () => (
           <div className="p-8 bg-slate-50 border border-slate-200 rounded-none shadow-none space-y-8">
             <div className="space-y-4">
               <h4 className="text-sm font-bold text-slate-900 border-b border-slate-200 pb-3">Minimum Requirements</h4>
-              <ul className="space-y-3 text-sm text-slate-700 font-medium">
-                <li className="flex items-center gap-3"><FileCheck className="w-4 h-4 text-primary shrink-0" /> Completion of all 16 modules</li>
-                <li className="flex items-center gap-3"><FileCheck className="w-4 h-4 text-primary shrink-0" /> Participation in final assessment</li>
+              <ul className="space-y-3 text-sm text-slate-700 font-medium w-fit mx-auto lg:mx-0 text-left">
+                <li className="flex items-center justify-start gap-3"><FileCheck className="w-4 h-4 text-primary shrink-0" /> Completion of all 16 modules</li>
+                <li className="flex items-center justify-start gap-3"><FileCheck className="w-4 h-4 text-primary shrink-0" /> Participation in final assessment</li>
               </ul>
             </div>
             {/* Real certificate image injected here */}
@@ -528,7 +528,7 @@ const RegistrationSection = () => {
 
       <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
         <FadeInWhenVisible>
-          <div className="space-y-10 text-slate-900">
+          <div className="space-y-10 text-slate-900 text-center lg:text-left flex flex-col items-center lg:items-start">
             <div className="space-y-4">
               <span className="text-primary text-xs font-bold uppercase tracking-widest block border border-primary/20 inline-block px-4 py-2 bg-white shadow-sm">Secure Enrollment</span>
               <h2 className="text-3xl lg:text-5xl font-bold font-serif leading-tight tracking-wide text-slate-900 drop-shadow-sm">
@@ -537,7 +537,7 @@ const RegistrationSection = () => {
             </div>
 
             <div className="space-y-8">
-              <div className="bg-white border border-slate-200 p-8 shadow-lg w-full max-w-sm flex flex-col justify-center">
+              <div className="bg-white border border-slate-200 p-8 shadow-lg w-full max-w-sm flex flex-col justify-center mx-auto lg:mx-0">
                 <p className="text-slate-500 font-bold text-xs mb-3 uppercase tracking-widest flex items-center gap-2"><Award className="w-4 h-4 text-primary" /> Launch Offer</p>
                 <div className="flex items-baseline gap-4">
                   <h2 className="text-5xl font-extrabold text-slate-900 tracking-tight">₹18,000</h2>
@@ -549,7 +549,7 @@ const RegistrationSection = () => {
                 <h4 className="text-lg font-bold text-slate-900 flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-secondary" /> What Your Registration Includes
                 </h4>
-                <ul className="space-y-4 text-sm text-slate-700 font-semibold max-w-md pl-1">
+                <ul className="space-y-4 text-sm text-slate-700 font-semibold max-w-md pl-1 w-fit mx-auto lg:mx-0 text-left">
                   {[
                     "Access to 16 structured video modules",
                     "Lifetime access to all course recordings",
@@ -557,7 +557,7 @@ const RegistrationSection = () => {
                     "Access to optional live Q&A sessions",
                     "Certificate of completion after course assessment"
                   ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3">
+                    <li key={i} className="flex items-start gap-3 justify-start">
                       <Check className="w-5 h-5 text-primary shrink-0 -mt-0.5" />
                       <span>{item}</span>
                     </li>
@@ -636,14 +636,14 @@ const Footer = () => (
     <div className="max-w-7xl mx-auto px-6 py-16">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">
         {/* About Section */}
-        <div className="space-y-6">
+        <div className="space-y-6 text-center md:text-left flex flex-col items-center md:items-start">
           <Link href="/" className="inline-block bg-white p-2 rounded-none">
             <Image src="/learnsimply_logo.jpeg" alt="Learn Simply Logo" width={160} height={48} className="h-10 w-auto rounded-none brightness-105" />
           </Link>
           <p className="text-sm text-slate-400 leading-relaxed max-w-md font-medium">
             Learn Simply Academy is a dedicated educational platform committed to bridging the gap between theoretical knowledge and practical surgical execution for gynecologists and medical professionals.
           </p>
-          <ul className="space-y-2 text-sm text-slate-300 font-semibold">
+          <ul className="space-y-2 text-sm text-slate-300 font-semibold w-fit mx-auto md:mx-0 text-left">
             <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-secondary" /> Expert-led curated curriculum</li>
             <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-secondary" /> Focus on clinical safety & efficiency</li>
             <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-secondary" /> Trusted by practitioners globally</li>
@@ -651,7 +651,7 @@ const Footer = () => (
         </div>
 
         {/* Contact Section */}
-        <div className="space-y-6">
+        <div className="space-y-6 text-center md:text-left flex flex-col items-center md:items-start">
           <h4 className="text-lg font-bold text-white font-serif tracking-wide mb-4">Contact Information</h4>
           <div className="space-y-4">
             <div className="flex items-start gap-4 p-4 bg-slate-900 border border-slate-800 rounded-none hover:bg-slate-800 transition-colors">
