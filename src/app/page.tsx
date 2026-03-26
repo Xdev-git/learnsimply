@@ -86,6 +86,7 @@ const VideoThumbnailPlayer = ({ videoSrc, thumbnailSrc, title }: { videoSrc: str
           src={thumbnailSrc}
           alt={title}
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-slate-900/40 group-hover:bg-slate-900/20 transition-all duration-300 flex items-center justify-center">
@@ -523,7 +524,13 @@ const TrustAndObjection = () => (
             </div>
             {/* Real certificate image injected here */}
             <div className="w-full relative rounded-none border border-slate-200 overflow-hidden aspect-[1.414/1] bg-white shadow-xl mb-3">
-              <Image src="/istockphoto-471143990-612x612.jpg" alt="Certificate Excellence" fill className="object-cover transition-transform hover:scale-105 duration-700" />
+              <Image 
+                src="/istockphoto-471143990-612x612.jpg" 
+                alt="Certificate Excellence" 
+                fill 
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                className="object-cover transition-transform hover:scale-105 duration-700" 
+              />
             </div>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest text-center">sample certificate</p>
           </div>
@@ -713,7 +720,14 @@ const RegistrationSection = () => {
 
               <div className="flex flex-col items-center gap-8 w-full">
                 <div className="w-full flex justify-center bg-white p-6 border border-slate-200 shadow-sm rounded-xl">
-                  <Image src="/kb_scanner.jpeg" alt="Payment QR Code" width={380} height={380} className="w-full h-auto max-w-[380px] object-contain rounded-md" />
+                  <Image 
+                    src="/kb_scanner.jpeg" 
+                    alt="Payment QR Code" 
+                    width={380} 
+                    height={380} 
+                    style={{ height: 'auto' }}
+                    className="w-full h-auto max-w-[380px] object-contain rounded-md" 
+                  />
                 </div>
                 <div className="w-full bg-slate-50 border border-slate-200 p-6 rounded-xl">
                   <ol className="text-base font-medium text-slate-700 space-y-4 list-decimal pl-6 marker:font-bold marker:text-primary">
