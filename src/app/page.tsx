@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import {
   CheckCircle2, Award, Globe2, MonitorPlay,
   Check, PlayCircle, ShieldCheck, ChevronDown,
@@ -60,6 +61,79 @@ const FAQItem = ({ q, a }: { q: string; a: string }) => {
   );
 };
 
+const VideoThumbnailPlayer = ({ videoSrc, thumbnailSrc, title }: { videoSrc: string, thumbnailSrc: string, title: string }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
+  return (
+    <>
+      <div
+        className="relative w-full h-full cursor-pointer group"
+        onClick={() => setIsOpen(true)}
+      >
+        <Image
+          src={thumbnailSrc}
+          alt={title}
+          fill
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-slate-900/40 group-hover:bg-slate-900/20 transition-all duration-300 flex items-center justify-center">
+          <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30 shadow-2xl transform group-hover:scale-110 transition-transform duration-500">
+            <PlayCircle className="w-12 h-12 text-white fill-white/10" />
+          </div>
+        </div>
+
+        {/* Play Label */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+          <span className="px-5 py-2 bg-white/90 backdrop-blur-sm text-slate-900 text-xs font-black uppercase tracking-widest rounded-full shadow-lg">
+            Watch Preview
+          </span>
+        </div>
+      </div>
+
+      {isOpen && createPortal(
+        <div
+          className="fixed inset-0 z-[5000] bg-slate-900/95 backdrop-blur-xl flex items-center justify-center p-4 lg:p-12 animate-in fade-in duration-300"
+          onClick={() => setIsOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-5xl aspect-video bg-black rounded-[2rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.5)] ring-1 ring-white/10"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute top-6 right-6 z-10 p-2 bg-black/50 hover:bg-white/10 text-white rounded-full transition-colors backdrop-blur-md border border-white/10"
+            >
+              <XCircle className="w-8 h-8" />
+            </button>
+            <div className="w-full h-full">
+              <video
+                src={videoSrc}
+                autoPlay
+                playsInline
+                controls
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+    </>
+  );
+};
+
 
 
 // --- Main Sections ---
@@ -74,15 +148,16 @@ const Hero = () => (
               Professional Education
             </span>
             <h1 className="text-4xl lg:text-5xl font-bold font-serif leading-tight text-white mb-2 drop-shadow-md">
-              <span className="text-secondary drop-shadow-lg">Vaginal Surgeries</span> <span className="text-primary">Online Course</span>
+              <span className="text-secondary drop-shadow-lg">Vaginal Surgeries</span><br /> <span className="text-primary">Online Course</span>
             </h1>
             <p className="text-lg text-white leading-snug font-medium">
-              Structured, Step-by-Step Surgical Training for Clinical Confidence.
+              Step-by-Step Surgical Clarity.
             </p>
           </div>
 
           <p className="text-base text-slate-200 leading-relaxed max-w-xl">
-            A 16-module online program designed for gynecologists and trainees to develop clear surgical understanding and practical decision-making in vaginal procedures.
+            A structured 16-module online masterclass designed to help practicing gynecologists,graduate and postgraduate students perform safe, efficient vaginal surgery with confidence.
+
           </p>
 
           <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-none p-4 flex items-center justify-center lg:justify-start gap-4 shadow-none w-full max-w-md mx-auto lg:mx-0">
@@ -90,17 +165,17 @@ const Hero = () => (
               <CheckCircle2 className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-sm text-white font-medium">Led by <strong className="font-bold tracking-wide">Dr. Kawita Bapat</strong></p>
+              <p className="text-sm text-white font-medium">Led by <a href="https://www.kawitabapat.com/" target="_blank" rel="noopener noreferrer" className="text-secondary hover:text-white underline underline-offset-4 decoration-secondary/40 hover:decoration-secondary transition-all"><strong className="font-bold tracking-wide">Dr. Kawita Bapat</strong></a></p>
               <p className="text-xs text-secondary mt-0.5 font-medium">38+ years experience, 15,000+ procedures</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-fit mx-auto lg:mx-0 text-left">
             {[
-              "Step-by-step techniques",
-              "Real operative insights",
-              "Complication management",
-              "Designed for busy clinicians"
+              "Learn step-by-step vaginal surgeries  techniques",
+              "Practical tips, tricks and complication management",
+              "Real surgical insights from decades of experience",
+              "Short, focused modules designed for busy clinicians"
             ].map((text, i) => (
               <div key={i} className="flex items-center justify-start gap-3 text-sm text-slate-100 font-medium drop-shadow-sm">
                 <Check className="w-4 h-4 text-secondary shrink-0" />
@@ -109,7 +184,7 @@ const Hero = () => (
             ))}
           </div>
 
-            <div className="flex flex-col items-center lg:items-start space-y-4 pt-4">
+          <div className="flex flex-col items-center lg:items-start space-y-4 pt-4">
             <a
               href="#registration"
               onClick={(e) => {
@@ -121,7 +196,7 @@ const Hero = () => (
               Register Now – ₹18,000
             </a>
             <div className="flex items-center gap-4 text-xs font-medium text-slate-300">
-              <span className="flex items-center gap-1"><Clock className="w-3 h-3 text-secondary" /> Lifetime access</span>
+              <span className="flex items-center gap-1"><Clock className="w-3 h-3 text-secondary" /> 1-Year Access from Date of Registration</span>
               <span className="flex items-center gap-1"><Award className="w-3 h-3 text-secondary" /> Certificate included</span>
             </div>
           </div>
@@ -215,13 +290,12 @@ const CourseOverviewMerged = () => (
 
         <FadeInWhenVisible delay={200}>
           <div className="flex flex-col gap-8">
-            {/* Inline video player, no autoplay */}
-            <div className="w-full bg-black border border-slate-200 aspect-video relative group flex items-center justify-center p-1 shadow-sm">
-              <video
-                src="/course_glance.mp4"
-                controls
-                preload="metadata"
-                className="w-full h-full object-cover"
+            {/* Inline video player transformed into thumbnail-popup */}
+            <div className="w-full bg-slate-100 border border-slate-200 aspect-video relative group rounded-[2.5rem] overflow-hidden shadow-lg">
+              <VideoThumbnailPlayer
+                videoSrc="/course_glance.mp4"
+                thumbnailSrc="/videothumb_1.jpg"
+                title="Course Overview Preview"
               />
             </div>
 
@@ -236,7 +310,7 @@ const CourseOverviewMerged = () => (
                   "Practical tips from experience",
                   "100% online, self-paced",
                   "Short, focused modules",
-                  "Lifetime access included",
+                  "1-Year Access from Date of Registration",
                   "Optional live Q&A sessions"
                 ].map((text, i) => (
                   <li key={i} className="flex items-start gap-2">
@@ -401,7 +475,7 @@ const AboutAcademySection = () => (
             About Learn Simply Academy
           </h2>
           <p className="text-base leading-relaxed font-medium !text-slate-200" style={{ color: '#e2e8f0' }}>
-            Founded by Dr. Kawita Bapat, the academy is dedicated to bridging the gap between theoretical knowledge and practical, safe surgical execution. We train the next generation of surgeons through structured clarity.
+            Founded by <a href="https://www.kawitabapat.com/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-secondary underline underline-offset-4 decoration-secondary/60 hover:decoration-secondary transition-all font-bold">Dr. Kawita Bapat</a>, the academy is dedicated to bridging the gap between theoretical knowledge and practical, safe surgical execution. We train the next generation of surgeons through structured clarity.
           </p>
           <ul className="space-y-4 pt-4 text-sm font-bold">
             <li className="flex items-center gap-4 bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-lg transition-colors hover:border-secondary/50 !text-white" style={{ color: '#ffffff' }}>
@@ -416,12 +490,11 @@ const AboutAcademySection = () => (
         </div>
       </FadeInWhenVisible>
       <FadeInWhenVisible delay={200}>
-        <div className="w-full bg-slate-900 border border-slate-800 rounded-[2rem] overflow-hidden shadow-[0_20px_50px_-10px_rgba(0,0,0,0.5)] relative p-2 ring-1 ring-slate-800">
-          <video
-            src="/learn_simply_academy.mp4"
-            controls
-            className="w-full h-full object-cover rounded-[1.5rem]"
-            poster="/learnsimply_logo.jpeg"
+        <div className="w-full bg-slate-900 border-4 border-slate-800 rounded-[2.5rem] overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.7)] relative aspect-video group">
+          <VideoThumbnailPlayer
+            videoSrc="/learn_simply_academy.mp4"
+            thumbnailSrc="/videothumb_2.jpg"
+            title="Learn Simply Academy Story"
           />
         </div>
       </FadeInWhenVisible>
@@ -449,9 +522,10 @@ const TrustAndObjection = () => (
               </ul>
             </div>
             {/* Real certificate image injected here */}
-            <div className="w-full relative rounded-none border border-slate-300 overflow-hidden aspect-[4/3] bg-white">
-              <Image src="/certificate-preview.png" alt="Certificate Preview" fill className="object-cover" />
+            <div className="w-full relative rounded-none border border-slate-200 overflow-hidden aspect-[1.414/1] bg-white shadow-xl mb-3">
+              <Image src="/istockphoto-471143990-612x612.jpg" alt="Certificate Excellence" fill className="object-cover transition-transform hover:scale-105 duration-700" />
             </div>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest text-center">sample certificate</p>
           </div>
         </div>
       </FadeInWhenVisible>
@@ -465,7 +539,7 @@ const TrustAndObjection = () => (
           <div className="space-y-2">
             {[
               { q: "Is the course live or recorded?", a: "Primarily recorded and self-paced, allowing you to learn at your convenience. Optional live Q&A sessions are conducted." },
-              { q: "How long will I have access?", a: "You get lifetime access to all 16 modules immediately upon registration." },
+              { q: "How long will I have access?", a: "You get 1-Year Access from Date of Registration." },
               { q: "Will I receive a certificate?", a: "Yes, after completing the modules and a brief assessment, you will receive a digital certificate." },
               { q: "Can I access it on mobile?", a: "Yes, the platform is fully responsive and compatible across mobile devices, tablets, and desktops." },
               { q: "How do I register?", a: "Click 'Register Now' to complete your secure payment. Access details are automatically shared post-payment via email." },
@@ -480,13 +554,15 @@ const TrustAndObjection = () => (
 
 const RegistrationSection = () => {
   const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
-  const [errors, setErrors] = useState({ name: "", email: "", phone: "" });
+  const [errors, setErrors] = useState({ name: "", email: "", phone: "", screenshot: "" });
+  const [screenshot, setScreenshot] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    let newErrors = { name: "", email: "", phone: "" };
+    let newErrors = { name: "", email: "", phone: "", screenshot: "" };
     let isValid = true;
 
     if (!formData.name.trim()) {
@@ -510,14 +586,48 @@ const RegistrationSection = () => {
       isValid = false;
     }
 
+    if (!screenshot) {
+      newErrors.screenshot = "Payment screenshot is required";
+      isValid = false;
+    } else if (screenshot.size > 1024 * 1024) {
+      newErrors.screenshot = "Screenshot size must be less than 1MB";
+      isValid = false;
+    } else if (!['image/jpeg', 'image/png', 'application/pdf', 'image/webp', 'image/gif'].includes(screenshot.type)) {
+      newErrors.screenshot = "File must be jpeg, png, pdf, webp, or gif";
+      isValid = false;
+    }
+
     setErrors(newErrors);
 
-    if (isValid) {
+    if (isValid && screenshot) {
       setIsSubmitting(true);
-      // Simulate API handshake before routing to secure payment gateway
-      setTimeout(() => {
-        window.location.href = `/checkout?name=${encodeURIComponent(formData.name)}&email=${encodeURIComponent(formData.email)}`;
-      }, 1000);
+      
+      const submitData = new FormData();
+      submitData.append("name", formData.name);
+      submitData.append("email", formData.email);
+      submitData.append("phone", formData.phone);
+      submitData.append("screenshot", screenshot);
+
+      fetch("/api/register", {
+        method: "POST",
+        body: submitData,
+      })
+        .then(async (res) => {
+          setIsSubmitting(false);
+          if (res.ok) {
+            setSuccessMessage("Registration submitted! We will email you the access link within 24-48 hours after payment confirmation.");
+            setFormData({ name: "", email: "", phone: "" });
+            setScreenshot(null);
+          } else {
+            const errorData = await res.json().catch(() => ({}));
+            alert(`Error: ${errorData.error || "Submission failed. Please try again."}`);
+          }
+        })
+        .catch((err) => {
+          setIsSubmitting(false);
+          console.error(err);
+          alert("Network error. Please try again later.");
+        });
     }
   };
 
@@ -526,106 +636,133 @@ const RegistrationSection = () => {
       {/* Subtle Background pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
 
-      <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
-        <FadeInWhenVisible>
-          <div className="space-y-10 text-slate-900 text-center lg:text-left flex flex-col items-center lg:items-start">
-            <div className="space-y-4">
-              <span className="text-primary text-xs font-bold uppercase tracking-widest block border border-primary/20 inline-block px-4 py-2 bg-white shadow-sm">Secure Enrollment</span>
-              <h2 className="text-3xl lg:text-5xl font-bold font-serif leading-tight tracking-wide text-slate-900 drop-shadow-sm">
-                Enroll in the <span className="text-primary">Vaginal Surgeries Online Course</span>
-              </h2>
+      <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-6">
+          <span className="text-primary text-xs font-bold uppercase tracking-widest block border border-primary/20 inline-block px-4 py-2 bg-white shadow-sm">Secure Enrollment</span>
+          <h2 className="text-3xl lg:text-5xl font-bold font-serif leading-tight tracking-wide text-slate-900 drop-shadow-sm">
+            Enroll in the <span className="text-primary">Vaginal Surgeries Online Course</span>
+          </h2>
+          <div className="bg-slate-50 p-6 mb-8 flex flex-col items-center justify-center">
+            <p className="text-slate-500 font-bold text-xs mb-3 uppercase tracking-widest flex items-center gap-2 justify-center"><Award className="w-4 h-4 text-primary" /> Launch Offer</p>
+            <div className="flex items-baseline justify-center gap-4 w-full">
+              <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">₹18,000</h2>
+              <p className="text-slate-400 font-bold line-through text-lg">₹22,000</p>
             </div>
+          </div>
+        </div>
 
-            <div className="space-y-8">
-              <div className="bg-white border border-slate-200 p-8 shadow-lg w-full max-w-sm flex flex-col justify-center mx-auto lg:mx-0">
-                <p className="text-slate-500 font-bold text-xs mb-3 uppercase tracking-widest flex items-center gap-2"><Award className="w-4 h-4 text-primary" /> Launch Offer</p>
-                <div className="flex items-baseline gap-4">
-                  <h2 className="text-5xl font-extrabold text-slate-900 tracking-tight">₹18,000</h2>
-                  <p className="text-slate-400 font-bold line-through text-lg">₹22,000</p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+          {/* Left Column: Payment Instructions & Details */}
+          <FadeInWhenVisible>
+            <div className="bg-white rounded-none shadow-xl p-8 lg:p-12 border border-slate-200">
+              <h3 className="text-2xl font-bold font-serif text-slate-900 mb-6 border-b border-slate-200 pb-4">1. Complete Payment</h3>
+
+
+
+              <div className="flex flex-col items-center gap-8 w-full">
+                <div className="w-full flex justify-center bg-white p-6 border border-slate-200 shadow-sm rounded-xl">
+                  <Image src="/kb_scanner.jpeg" alt="Payment QR Code" width={380} height={380} className="w-full h-auto max-w-[380px] object-contain rounded-md" />
+                </div>
+                <div className="w-full bg-slate-50 border border-slate-200 p-6 rounded-xl">
+                  <ol className="text-base font-medium text-slate-700 space-y-4 list-decimal pl-6 marker:font-bold marker:text-primary">
+                    <li>Scan the QR code to securely pay <strong className="text-slate-900">₹18,000</strong>.</li>
+                    <li>Save a screenshot of the successful transaction.</li>
+                    <li>Proceed to Step 2 to submit your details.</li>
+                  </ol>
                 </div>
               </div>
 
-              <div className="space-y-4 pt-2">
-                <h4 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-secondary" /> What Your Registration Includes
-                </h4>
-                <ul className="space-y-4 text-sm text-slate-700 font-semibold max-w-md pl-1 w-fit mx-auto lg:mx-0 text-left">
-                  {[
-                    "Access to 16 structured video modules",
-                    "Lifetime access to all course recordings",
-                    "Practical surgical learning and operative insights",
-                    "Access to optional live Q&A sessions",
-                    "Certificate of completion after course assessment"
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 justify-start">
-                      <Check className="w-5 h-5 text-primary shrink-0 -mt-0.5" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+
             </div>
-          </div>
-        </FadeInWhenVisible>
+          </FadeInWhenVisible>
 
-        <FadeInWhenVisible delay={200}>
-          <div className="bg-white rounded-none shadow-xl p-8 lg:p-12 border border-slate-200 relative">
-            <div className="space-y-2 mb-8 text-center text-slate-900">
-              <h3 className="text-2xl font-bold font-serif">Register & Pay Securely</h3>
-              <p className="text-sm font-medium text-slate-600">Fast, secure online checkout</p>
+          {/* Right Column: Registration Form */}
+          <FadeInWhenVisible delay={200}>
+            <div className="bg-white rounded-none shadow-xl p-8 lg:p-12 border border-slate-200 h-full flex flex-col justify-between">
+              {successMessage ? (
+                <div className="text-center py-16 flex flex-col justify-center h-full my-auto">
+                  <div className="mx-auto w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-6">
+                    <CheckCircle2 className="w-8 h-8 text-emerald-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold font-serif text-slate-900 mb-4">Registration Successful</h3>
+                  <p className="text-slate-600 font-medium leading-relaxed">{successMessage}</p>
+                </div>
+              ) : (
+                <>
+                  <div className="mb-8 border-b border-slate-200 pb-4">
+                    <h3 className="text-2xl font-bold font-serif text-slate-900 mb-2">2. Submit Registration</h3>
+                    <p className="text-sm font-medium text-slate-600">Please provide your details and attach payment proof.</p>
+                  </div>
+
+                  <form className="space-y-5 flex-grow" onSubmit={handleSubmit}>
+                    <div className="space-y-1.5">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 ml-1">Full Name</label>
+                      <input
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        className={`w-full p-3.5 bg-slate-50 border ${errors.name ? 'border-red-400' : 'border-slate-300'} rounded-none text-sm font-semibold text-slate-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-none`}
+                        placeholder="Dr. First Last Name"
+                      />
+                      {errors.name && <p className="text-xs text-red-500 font-bold ml-1">{errors.name}</p>}
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 ml-1">Email Address</label>
+                      <input
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className={`w-full p-3.5 bg-slate-50 border ${errors.email ? 'border-red-400' : 'border-slate-300'} rounded-none text-sm font-semibold text-slate-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-none`}
+                        placeholder="dr.name@hospital.com"
+                      />
+                      {errors.email && <p className="text-xs text-red-500 font-bold ml-1">{errors.email}</p>}
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 ml-1">WhatsApp Number</label>
+                      <input
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        className={`w-full p-3.5 bg-slate-50 border ${errors.phone ? 'border-red-400' : 'border-slate-300'} rounded-none text-sm font-semibold text-slate-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-none`}
+                        placeholder="+91 XXXX XXXX XX"
+                      />
+                      {errors.phone && <p className="text-xs text-red-500 font-bold ml-1">{errors.phone}</p>}
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 ml-1">Payment Screenshot (Max 1MB)</label>
+                      <input
+                        type="file"
+                        accept=".jpg,.jpeg,.png,.pdf,.webp,.gif"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0] || null;
+                          setScreenshot(file);
+                          setErrors(prev => ({ ...prev, screenshot: "" }));
+                        }}
+                        className={`w-full bg-slate-50 border ${errors.screenshot ? 'border-red-400' : 'border-slate-300'} rounded-none text-sm font-medium text-slate-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-none file:mr-4 file:py-3.5 file:px-4 file:border-0 file:border-r file:border-slate-300 file:text-xs file:font-bold file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300 cursor-pointer p-0`}
+                      />
+                      {errors.screenshot && <p className="text-xs text-red-500 font-bold ml-1">{errors.screenshot}</p>}
+                    </div>
+
+                    <div className="pt-6 mt-auto border-t border-slate-100 pb-2">
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className={`w-full py-4 bg-primary text-white font-bold rounded-none text-base border-none ${isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-secondary'} transition-colors flex justify-center items-center gap-2`}
+                      >
+                        <CheckCircle2 className="w-5 h-5" />
+                        {isSubmitting ? "Submitting Registration..." : "Submit Registration"}
+                      </button>
+                    </div>
+
+                    <p className="text-xs text-slate-500 font-semibold leading-relaxed text-center mt-2">
+                      Access will be provided via email within <br /><strong className="text-slate-700">24-48 hours</strong> after verification.
+                    </p>
+                  </form>
+                </>
+              )}
             </div>
-
-            <form className="space-y-5" onSubmit={handleSubmit}>
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 ml-1">Full Name</label>
-                <input
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className={`w-full p-3.5 bg-slate-50 border ${errors.name ? 'border-red-400' : 'border-slate-300'} rounded-none text-sm font-semibold text-slate-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-none`}
-                  placeholder="Dr. First Last Name"
-                />
-                {errors.name && <p className="text-xs text-red-500 font-bold ml-1">{errors.name}</p>}
-              </div>
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 ml-1">Email Address</label>
-                <input
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className={`w-full p-3.5 bg-slate-50 border ${errors.email ? 'border-red-400' : 'border-slate-300'} rounded-none text-sm font-semibold text-slate-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-none`}
-                  placeholder="dr.name@hospital.com"
-                />
-                {errors.email && <p className="text-xs text-red-500 font-bold ml-1">{errors.email}</p>}
-              </div>
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 ml-1">WhatsApp Number</label>
-                <input
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className={`w-full p-3.5 bg-slate-50 border ${errors.phone ? 'border-red-400' : 'border-slate-300'} rounded-none text-sm font-semibold text-slate-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-none`}
-                  placeholder="+91 XXXX XXXX XX"
-                />
-                {errors.phone && <p className="text-xs text-red-500 font-bold ml-1">{errors.phone}</p>}
-              </div>
-
-              <div className="pt-4">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`w-full py-4 bg-primary text-white font-bold rounded-none text-base border-none ${isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-secondary'} transition-colors flex justify-center items-center gap-2`}
-                >
-                  <Shield className="w-4 h-4" />
-                  {isSubmitting ? "Processing secure link..." : "Proceed to Pay ₹18,000"}
-                </button>
-              </div>
-
-              <div className="flex flex-col items-center gap-3 text-center pt-2">
-                <p className="text-[10px] text-slate-600 max-w-xs font-semibold leading-relaxed bg-slate-100 p-2 border border-slate-200 rounded-none w-full">
-                  Access provided immediately after successful payment. Login details will be emailed.
-                </p>
-              </div>
-            </form>
-          </div>
-        </FadeInWhenVisible>
+          </FadeInWhenVisible>
+        </div>
       </div>
     </section>
   );
@@ -658,14 +795,14 @@ const Footer = () => (
               <Mail className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Email Support</p>
-                <p className="text-sm text-slate-200 font-medium">support@learnsimplyacademy.com</p>
+                <p className="text-sm text-slate-200 font-medium">learnsimplyacademy@gmail.com</p>
               </div>
             </div>
             <div className="flex items-start gap-4 p-4 bg-slate-900 border border-slate-800 rounded-none hover:bg-slate-800 transition-colors">
               <Phone className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">WhatsApp / Phone</p>
-                <p className="text-sm text-slate-200 font-medium">+91-98260 55666</p>
+                <p className="text-sm text-slate-200 font-medium">+9198260 55666, +91 79873 82998</p>
               </div>
             </div>
             <div className="flex items-start gap-4 p-4 bg-slate-900 border border-slate-800 rounded-none hover:bg-slate-800 transition-colors">
@@ -682,7 +819,7 @@ const Footer = () => (
 
     <div className="border-t border-slate-900 bg-black">
       <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-semibold text-slate-500">
-        <p>© {new Date().getFullYear()} Learn Simply Academy. All rights reserved.</p>
+        <p>© {new Date().getFullYear()}, <a href="https://www.kawitabapat.com/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white underline underline-offset-4 decoration-slate-600 hover:decoration-white transition-all font-bold">Dr. Kawita Bapat</a>. All rights reserved.</p>
         <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-6 gap-y-2">
           <Link href="/legal/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link>
           <Link href="/legal/terms" className="hover:text-primary transition-colors">Terms of Use</Link>

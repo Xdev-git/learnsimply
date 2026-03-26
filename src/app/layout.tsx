@@ -4,14 +4,14 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
-const plexSans = IBM_Plex_Sans({ 
-  subsets: ["latin"], 
+const plexSans = IBM_Plex_Sans({
+  subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
 });
 
-const plexSerif = IBM_Plex_Serif({ 
-  subsets: ["latin"], 
+const plexSerif = IBM_Plex_Serif({
+  subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-serif",
 });
@@ -19,7 +19,7 @@ const plexSerif = IBM_Plex_Serif({
 import { BackToTop } from "@/components/BackToTop";
 
 export const metadata: Metadata = {
-  title: "Learn Simply Academy | Simple & Effective Online Education",
+  title: "Learn Simply Academy",
   description: "Master any skill with our structured, expert-led online masterclasses designed for deep understanding and career growth.",
   keywords: ["online education", "masterclass", "learn skills", "career growth", "self-paced learning"],
 };

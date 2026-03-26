@@ -23,7 +23,7 @@ export const Footer = () => {
               />
             </Link>
             <p className="text-sm font-medium leading-relaxed text-slate-400">
-              Founded by <strong>Dr. Kawita Bapat</strong>, Learn Simply Academy aims to make complex surgical knowledge simple, practical, and accessible for gynecologists worldwide.
+              Founded by <a href="https://www.kawitabapat.com/" target="_blank" rel="noopener noreferrer" className="text-secondary hover:text-white underline underline-offset-4 decoration-secondary/30 hover:decoration-secondary transition-all"><strong>Dr. Kawita Bapat</strong></a>, Learn Simply Academy aims to make complex surgical knowledge simple, practical, and accessible for gynecologists worldwide.
             </p>
             <div className="flex gap-6">
                 {/* Social icons could go here */}
@@ -83,7 +83,7 @@ export const Footer = () => {
 
         <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-            © {new Date().getFullYear()}, Dr. Kawita Bapat. All rights reserved.
+            © {new Date().getFullYear()}, <a href="https://www.kawitabapat.com/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white underline underline-offset-4 decoration-slate-600 hover:decoration-white transition-all font-bold">Dr. Kawita Bapat</a>. All rights reserved.
           </p>
           <div className="flex gap-10">
              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-600">Built with Excellence</span>
