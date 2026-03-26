@@ -893,17 +893,6 @@ const RegistrationSection = () => {
                           <div className="flex-grow overflow-hidden">
                              <p className="text-[9px] font-bold text-slate-400 tracking-wider uppercase">File Selected</p>
                              <p className="text-xs font-bold text-slate-900 truncate">{screenshot.name}</p>
-                             <button 
-                               type="button"
-                               onClick={() => {
-                                 setScreenshot(null);
-                                 if (previewUrl) URL.revokeObjectURL(previewUrl);
-                                 setPreviewUrl(null);
-                               }}
-                               className="text-[9px] font-bold text-red-500 uppercase tracking-widest hover:underline mt-0.5"
-                             >
-                               Remove & Replace
-                             </button>
                           </div>
                           <CheckCircle2 className="w-5 h-5 text-emerald-500 mr-2" />
                        </div>
