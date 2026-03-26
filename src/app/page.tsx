@@ -724,9 +724,11 @@ const RegistrationSection = () => {
                     src="/kb_scanner.jpeg" 
                     alt="Payment QR Code" 
                     width={380} 
-                    height={380} 
-                    style={{ height: 'auto' }}
-                    className="w-full h-auto max-w-[380px] object-contain rounded-md" 
+                    height={380}
+                    loading="eager"
+                    priority
+                    style={{ width: '100%', height: 'auto' }}
+                    className="max-w-[380px] object-contain rounded-md" 
                   />
                 </div>
                 <div className="w-full bg-slate-50 border border-slate-200 p-6 rounded-xl">
