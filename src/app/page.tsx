@@ -524,12 +524,12 @@ const TrustAndObjection = () => (
             </div>
             {/* Real certificate image injected here */}
             <div className="w-full relative rounded-none border border-slate-200 overflow-hidden aspect-[1.414/1] bg-white shadow-xl mb-3">
-              <Image 
-                src="/istockphoto-471143990-612x612.jpg" 
-                alt="Certificate Excellence" 
-                fill 
+              <Image
+                src="/istockphoto-471143990-612x612.jpg"
+                alt="Certificate Excellence"
+                fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-                className="object-cover transition-transform hover:scale-105 duration-700" 
+                className="object-cover transition-transform hover:scale-105 duration-700"
               />
             </div>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest text-center">sample certificate</p>
@@ -579,8 +579,8 @@ const RegistrationSection = () => {
     e.preventDefault();
 
     if (isPreview) {
-       handleFinalSubmit();
-       return;
+      handleFinalSubmit();
+      return;
     }
 
     let newErrors = { name: "", email: "", phone: "", screenshot: "" };
@@ -628,7 +628,7 @@ const RegistrationSection = () => {
   const handleFinalSubmit = () => {
     if (!screenshot) return;
     setIsSubmitting(true);
-    
+
     const submitData = new FormData();
     submitData.append("name", formData.name);
     submitData.append("email", formData.email);
@@ -667,35 +667,35 @@ const RegistrationSection = () => {
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
 
       {isImageModalOpen && previewUrl && (
-         createPortal(
-            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/95 p-4 animate-in fade-in duration-300">
-               <div className="relative max-w-4xl w-full h-full flex flex-col justify-center">
-                  <button 
-                     onClick={() => setIsImageModalOpen(false)}
-                     className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 text-white transition-colors rounded-none outline-none"
-                  >
-                     <XCircle className="w-8 h-8" />
-                  </button>
-                  <div className="w-full h-full flex items-center justify-center p-4">
-                     <img 
-                       src={previewUrl} 
-                       alt="Payment Confirmation Full Preview" 
-                       className="max-w-full max-h-full object-contain shadow-2xl" 
-                     />
-                  </div>
-                  <p className="text-center text-white/60 text-xs font-bold uppercase tracking-widest mt-4">
-                    Click anywhere outside or the close button to return
-                  </p>
-               </div>
-               <div className="absolute inset-0 -z-10" onClick={() => setIsImageModalOpen(false)} />
-            </div>,
-            document.body
-         )
+        createPortal(
+          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/95 p-4 animate-in fade-in duration-300">
+            <div className="relative max-w-4xl w-full h-full flex flex-col justify-center">
+              <button
+                onClick={() => setIsImageModalOpen(false)}
+                className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 text-white transition-colors rounded-none outline-none"
+              >
+                <XCircle className="w-8 h-8" />
+              </button>
+              <div className="w-full h-full flex items-center justify-center p-4">
+                <img
+                  src={previewUrl}
+                  alt="Payment Confirmation Full Preview"
+                  className="max-w-full max-h-full object-contain shadow-2xl"
+                />
+              </div>
+              <p className="text-center text-white/60 text-xs font-bold uppercase tracking-widest mt-4">
+                Click anywhere outside or the close button to return
+              </p>
+            </div>
+            <div className="absolute inset-0 -z-10" onClick={() => setIsImageModalOpen(false)} />
+          </div>,
+          document.body
+        )
       )}
- 
 
- 
-       <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
+
+
+      <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-6">
           <span className="text-primary text-xs font-bold uppercase tracking-widest block border border-primary/20 inline-block px-4 py-2 bg-white shadow-sm">Secure Enrollment</span>
           <h2 className="text-3xl lg:text-5xl font-bold font-serif leading-tight tracking-wide text-slate-900 drop-shadow-sm">
@@ -720,18 +720,18 @@ const RegistrationSection = () => {
 
               <div className="flex flex-col items-center gap-8 w-full">
                 <div className="w-full flex justify-center bg-white p-6 border border-slate-200 shadow-sm rounded-xl">
-                  <Image 
-                    src="/kb_scanner.jpeg" 
-                    alt="Payment QR Code" 
-                    width={380} 
+                  <Image
+                    src="/kb_scanner.jpeg"
+                    alt="Payment QR Code"
+                    width={380}
                     height={380}
                     loading="eager"
                     priority
                     style={{ width: '100%', height: 'auto' }}
-                    className="max-w-[380px] object-contain rounded-md" 
+                    className="max-w-[380px] object-contain rounded-md"
                   />
                 </div>
-                <div className="w-full bg-slate-50 border border-slate-200 p-6 rounded-xl">
+                <div className="w-full p-6">
                   <ol className="text-base font-medium text-slate-700 space-y-4 list-decimal pl-6 marker:font-bold marker:text-primary">
                     <li>Scan the QR code to securely pay <strong className="text-slate-900">₹18,000</strong>.</li>
                     <li>Save a screenshot of the successful transaction.</li>
@@ -758,47 +758,47 @@ const RegistrationSection = () => {
               ) : isPreview ? (
                 <>
                   <div className="flex flex-col h-full">
-                  <div className="mb-6 border-b border-slate-200 pb-4">
-                    <h3 className="text-2xl font-bold font-serif text-slate-900 mb-2">Review Your Details</h3>
-                    <p className="text-sm font-medium text-slate-600">Please confirm your information before final submission.</p>
+                    <div className="mb-6 border-b border-slate-200 pb-4">
+                      <h3 className="text-2xl font-bold font-serif text-slate-900 mb-2">Review Your Details</h3>
+                      <p className="text-sm font-medium text-slate-600">Please confirm your information before final submission.</p>
+                    </div>
+
+                    <div className="space-y-6 flex-grow">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                        <div className="flex-grow space-y-4">
+                          <div>
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Full Name</p>
+                            <p className="text-base font-bold text-slate-900">{formData.name}</p>
+                          </div>
+                          <div>
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">WhatsApp</p>
+                            <p className="text-base font-bold text-slate-900">{formData.phone}</p>
+                          </div>
+                        </div>
+                        {previewUrl && screenshot?.type.startsWith('image/') && (
+                          <div className="shrink-0">
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">Payment Screenshot</p>
+                            <button
+                              type="button"
+                              onClick={() => setIsImageModalOpen(true)}
+                              className="group relative w-24 h-24 border-2 border-slate-200 hover:border-primary transition-colors overflow-hidden bg-slate-100"
+                            >
+                              <img src={previewUrl} alt="Preview" className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+                              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <PlayCircle className="w-6 h-6 text-white rotate-90" />
+                              </div>
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                      <div className="pt-2 border-t border-slate-200">
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Email Address</p>
+                        <p className="text-base font-bold text-slate-900">{formData.email}</p>
+                      </div>
+                    </div>
+
                   </div>
 
-                  <div className="space-y-6 flex-grow">
-                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                           <div className="flex-grow space-y-4">
-                              <div>
-                                 <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Full Name</p>
-                                 <p className="text-base font-bold text-slate-900">{formData.name}</p>
-                              </div>
-                              <div>
-                                 <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">WhatsApp</p>
-                                 <p className="text-base font-bold text-slate-900">{formData.phone}</p>
-                              </div>
-                           </div>
-                           {previewUrl && screenshot?.type.startsWith('image/') && (
-                              <div className="shrink-0">
-                                 <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">Payment Screenshot</p>
-                                 <button 
-                                   type="button"
-                                   onClick={() => setIsImageModalOpen(true)}
-                                   className="group relative w-24 h-24 border-2 border-slate-200 hover:border-primary transition-colors overflow-hidden bg-slate-100"
-                                 >
-                                    <img src={previewUrl} alt="Preview" className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
-                                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                       <PlayCircle className="w-6 h-6 text-white rotate-90" />
-                                    </div>
-                                 </button>
-                              </div>
-                           )}
-                        </div>
-                        <div className="pt-2 border-t border-slate-200">
-                           <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Email Address</p>
-                           <p className="text-base font-bold text-slate-900">{formData.email}</p>
-                        </div>
-                     </div>
-
-                  </div>
- 
 
 
                   <div className="pt-8 space-y-4 border-t border-slate-100 mt-6">
@@ -831,14 +831,14 @@ const RegistrationSection = () => {
                   <form className="space-y-5 flex-grow" onSubmit={handleSubmit}>
                     {/* Honeypot field - hidden from users */}
                     <div className="hidden" aria-hidden="true">
-                       <input 
-                         type="text" 
-                         name="confirm_email" 
-                         value={formData.confirm_email}
-                         onChange={(e) => setFormData({...formData, confirm_email: e.target.value})}
-                         tabIndex={-1} 
-                         autoComplete="off" 
-                       />
+                      <input
+                        type="text"
+                        name="confirm_email"
+                        value={formData.confirm_email}
+                        onChange={(e) => setFormData({ ...formData, confirm_email: e.target.value })}
+                        tabIndex={-1}
+                        autoComplete="off"
+                      />
                     </div>
                     <div className="space-y-1.5">
                       <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 ml-1">Full Name</label>
@@ -883,9 +883,9 @@ const RegistrationSection = () => {
                           setScreenshot(file);
                           if (previewUrl) URL.revokeObjectURL(previewUrl);
                           if (file && file.type.startsWith('image/')) {
-                             setPreviewUrl(URL.createObjectURL(file));
+                            setPreviewUrl(URL.createObjectURL(file));
                           } else {
-                             setPreviewUrl(null);
+                            setPreviewUrl(null);
                           }
                           setErrors(prev => ({ ...prev, screenshot: "" }));
                         }}
@@ -893,25 +893,25 @@ const RegistrationSection = () => {
                       />
                       {errors.screenshot && <p className="text-xs text-red-500 font-bold ml-1">{errors.screenshot}</p>}
                     </div>
- 
+
                     {previewUrl && screenshot?.type.startsWith('image/') && (
-                       <div className="flex items-center gap-4 bg-slate-50 border border-slate-200 p-2 group transition-all hover:bg-white hover:shadow-sm">
-                          <button 
-                            type="button"
-                            onClick={() => setIsImageModalOpen(true)}
-                            className="relative w-14 h-14 border border-slate-300 overflow-hidden shrink-0"
-                          >
-                             <img src={previewUrl} alt="Upload Preview" className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
-                             <div className="absolute inset-0 bg-black/10 flex items-center justify-center transition-colors hover:bg-black/20">
-                                <MonitorPlay className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                             </div>
-                          </button>
-                          <div className="flex-grow overflow-hidden">
-                             <p className="text-[9px] font-bold text-slate-400 tracking-wider uppercase">File Selected</p>
-                             <p className="text-xs font-bold text-slate-900 truncate">{screenshot.name}</p>
+                      <div className="flex items-center gap-4 bg-slate-50 border border-slate-200 p-2 group transition-all hover:bg-white hover:shadow-sm">
+                        <button
+                          type="button"
+                          onClick={() => setIsImageModalOpen(true)}
+                          className="relative w-14 h-14 border border-slate-300 overflow-hidden shrink-0"
+                        >
+                          <img src={previewUrl} alt="Upload Preview" className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+                          <div className="absolute inset-0 bg-black/10 flex items-center justify-center transition-colors hover:bg-black/20">
+                            <MonitorPlay className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                           </div>
-                          <CheckCircle2 className="w-5 h-5 text-emerald-500 mr-2" />
-                       </div>
+                        </button>
+                        <div className="flex-grow overflow-hidden">
+                          <p className="text-[9px] font-bold text-slate-400 tracking-wider uppercase">File Selected</p>
+                          <p className="text-xs font-bold text-slate-900 truncate">{screenshot.name}</p>
+                        </div>
+                        <CheckCircle2 className="w-5 h-5 text-emerald-500 mr-2" />
+                      </div>
                     )}
 
                     <div className="pt-6 mt-auto border-t border-slate-100 pb-2">
