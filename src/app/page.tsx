@@ -8,7 +8,7 @@ import {
   CheckCircle2, Award, Globe2, MonitorPlay,
   Check, PlayCircle, ShieldCheck, ChevronDown,
   BookOpen, Clock, FileCheck, XCircle, Shield,
-  Mail, Phone, MapPin
+  Mail, Phone, MapPin, ArrowRight
 } from "lucide-react";
 
 // --- Sub-components ---
@@ -553,14 +553,28 @@ const TrustAndObjection = () => (
 );
 
 const RegistrationSection = () => {
-  const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "", confirm_email: "" });
   const [errors, setErrors] = useState({ name: "", email: "", phone: "", screenshot: "" });
   const [screenshot, setScreenshot] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPreview, setIsPreview] = useState(false);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (isPreview) {
+       handleFinalSubmit();
+       return;
+    }
 
     let newErrors = { name: "", email: "", phone: "", screenshot: "" };
     let isValid = true;
@@ -600,35 +614,44 @@ const RegistrationSection = () => {
     setErrors(newErrors);
 
     if (isValid && screenshot) {
-      setIsSubmitting(true);
-      
-      const submitData = new FormData();
-      submitData.append("name", formData.name);
-      submitData.append("email", formData.email);
-      submitData.append("phone", formData.phone);
-      submitData.append("screenshot", screenshot);
-
-      fetch("/api/register", {
-        method: "POST",
-        body: submitData,
-      })
-        .then(async (res) => {
-          setIsSubmitting(false);
-          if (res.ok) {
-            setSuccessMessage("Registration submitted! We will email you the access link within 24-48 hours after payment confirmation.");
-            setFormData({ name: "", email: "", phone: "" });
-            setScreenshot(null);
-          } else {
-            const errorData = await res.json().catch(() => ({}));
-            alert(`Error: ${errorData.error || "Submission failed. Please try again."}`);
-          }
-        })
-        .catch((err) => {
-          setIsSubmitting(false);
-          console.error(err);
-          alert("Network error. Please try again later.");
-        });
+      setIsPreview(true);
     }
+  };
+
+  const handleFinalSubmit = () => {
+    if (!screenshot) return;
+    setIsSubmitting(true);
+    
+    const submitData = new FormData();
+    submitData.append("name", formData.name);
+    submitData.append("email", formData.email);
+    submitData.append("phone", formData.phone);
+    submitData.append("confirm_email", formData.confirm_email); // Honeypot
+    submitData.append("screenshot", screenshot);
+
+    fetch("/api/register", {
+      method: "POST",
+      body: submitData,
+    })
+      .then(async (res) => {
+        setIsSubmitting(false);
+        if (res.ok) {
+          setSuccessMessage("Registration submitted! We will email you the access link within 24-48 hours after payment confirmation.");
+          setFormData({ name: "", email: "", phone: "", confirm_email: "" });
+          setScreenshot(null);
+          if (previewUrl) URL.revokeObjectURL(previewUrl);
+          setPreviewUrl(null);
+          setIsPreview(false);
+        } else {
+          const errorData = await res.json().catch(() => ({}));
+          alert(`Error: ${errorData.error || "Submission failed. Please try again."}`);
+        }
+      })
+      .catch((err) => {
+        setIsSubmitting(false);
+        console.error(err);
+        alert("Network error. Please try again later.");
+      });
   };
 
   return (
@@ -636,7 +659,36 @@ const RegistrationSection = () => {
       {/* Subtle Background pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
 
-      <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
+      {isImageModalOpen && previewUrl && (
+         createPortal(
+            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/95 p-4 animate-in fade-in duration-300">
+               <div className="relative max-w-4xl w-full h-full flex flex-col justify-center">
+                  <button 
+                     onClick={() => setIsImageModalOpen(false)}
+                     className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 text-white transition-colors rounded-none outline-none"
+                  >
+                     <XCircle className="w-8 h-8" />
+                  </button>
+                  <div className="w-full h-full flex items-center justify-center p-4">
+                     <img 
+                       src={previewUrl} 
+                       alt="Payment Confirmation Full Preview" 
+                       className="max-w-full max-h-full object-contain shadow-2xl" 
+                     />
+                  </div>
+                  <p className="text-center text-white/60 text-xs font-bold uppercase tracking-widest mt-4">
+                    Click anywhere outside or the close button to return
+                  </p>
+               </div>
+               <div className="absolute inset-0 -z-10" onClick={() => setIsImageModalOpen(false)} />
+            </div>,
+            document.body
+         )
+      )}
+ 
+
+ 
+       <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-6">
           <span className="text-primary text-xs font-bold uppercase tracking-widest block border border-primary/20 inline-block px-4 py-2 bg-white shadow-sm">Secure Enrollment</span>
           <h2 className="text-3xl lg:text-5xl font-bold font-serif leading-tight tracking-wide text-slate-900 drop-shadow-sm">
@@ -687,6 +739,71 @@ const RegistrationSection = () => {
                   <h3 className="text-2xl font-bold font-serif text-slate-900 mb-4">Registration Successful</h3>
                   <p className="text-slate-600 font-medium leading-relaxed">{successMessage}</p>
                 </div>
+              ) : isPreview ? (
+                <>
+                  <div className="flex flex-col h-full">
+                  <div className="mb-6 border-b border-slate-200 pb-4">
+                    <h3 className="text-2xl font-bold font-serif text-slate-900 mb-2">Review Your Details</h3>
+                    <p className="text-sm font-medium text-slate-600">Please confirm your information before final submission.</p>
+                  </div>
+
+                  <div className="space-y-6 flex-grow">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                           <div className="flex-grow space-y-4">
+                              <div>
+                                 <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Full Name</p>
+                                 <p className="text-base font-bold text-slate-900">{formData.name}</p>
+                              </div>
+                              <div>
+                                 <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">WhatsApp</p>
+                                 <p className="text-base font-bold text-slate-900">{formData.phone}</p>
+                              </div>
+                           </div>
+                           {previewUrl && screenshot?.type.startsWith('image/') && (
+                              <div className="shrink-0">
+                                 <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">Payment Screenshot</p>
+                                 <button 
+                                   type="button"
+                                   onClick={() => setIsImageModalOpen(true)}
+                                   className="group relative w-24 h-24 border-2 border-slate-200 hover:border-primary transition-colors overflow-hidden bg-slate-100"
+                                 >
+                                    <img src={previewUrl} alt="Preview" className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+                                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                       <PlayCircle className="w-6 h-6 text-white rotate-90" />
+                                    </div>
+                                 </button>
+                              </div>
+                           )}
+                        </div>
+                        <div className="pt-2 border-t border-slate-200">
+                           <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Email Address</p>
+                           <p className="text-base font-bold text-slate-900">{formData.email}</p>
+                        </div>
+                     </div>
+
+                  </div>
+ 
+
+
+                  <div className="pt-8 space-y-4 border-t border-slate-100 mt-6">
+                    <button
+                      type="button"
+                      disabled={isSubmitting}
+                      onClick={handleFinalSubmit}
+                      className={`w-full py-4 bg-primary text-white font-bold rounded-none text-base border-none ${isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-secondary'} transition-colors flex justify-center items-center gap-2`}
+                    >
+                      <ShieldCheck className="w-5 h-5" />
+                      {isSubmitting ? "Finalizing..." : "Confirm & Submit"}
+                    </button>
+                    <button
+                      type="button"
+                      disabled={isSubmitting}
+                      onClick={() => setIsPreview(false)}
+                      className="w-full py-3 bg-white text-slate-600 font-bold rounded-none text-sm border border-slate-200 hover:bg-slate-50 transition-colors uppercase tracking-widest"
+                    >
+                      Edit Information
+                    </button>
+                </>
               ) : (
                 <>
                   <div className="mb-8 border-b border-slate-200 pb-4">
@@ -695,6 +812,17 @@ const RegistrationSection = () => {
                   </div>
 
                   <form className="space-y-5 flex-grow" onSubmit={handleSubmit}>
+                    {/* Honeypot field - hidden from users */}
+                    <div className="hidden" aria-hidden="true">
+                       <input 
+                         type="text" 
+                         name="confirm_email" 
+                         value={formData.confirm_email}
+                         onChange={(e) => setFormData({...formData, confirm_email: e.target.value})}
+                         tabIndex={-1} 
+                         autoComplete="off" 
+                       />
+                    </div>
                     <div className="space-y-1.5">
                       <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 ml-1">Full Name</label>
                       <input
@@ -736,12 +864,49 @@ const RegistrationSection = () => {
                         onChange={(e) => {
                           const file = e.target.files?.[0] || null;
                           setScreenshot(file);
+                          if (previewUrl) URL.revokeObjectURL(previewUrl);
+                          if (file && file.type.startsWith('image/')) {
+                             setPreviewUrl(URL.createObjectURL(file));
+                          } else {
+                             setPreviewUrl(null);
+                          }
                           setErrors(prev => ({ ...prev, screenshot: "" }));
                         }}
                         className={`w-full bg-slate-50 border ${errors.screenshot ? 'border-red-400' : 'border-slate-300'} rounded-none text-sm font-medium text-slate-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-none file:mr-4 file:py-3.5 file:px-4 file:border-0 file:border-r file:border-slate-300 file:text-xs file:font-bold file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300 cursor-pointer p-0`}
                       />
                       {errors.screenshot && <p className="text-xs text-red-500 font-bold ml-1">{errors.screenshot}</p>}
                     </div>
+ 
+                    {previewUrl && screenshot?.type.startsWith('image/') && (
+                       <div className="flex items-center gap-4 bg-slate-50 border border-slate-200 p-2 group transition-all hover:bg-white hover:shadow-sm">
+                          <button 
+                            type="button"
+                            onClick={() => setIsImageModalOpen(true)}
+                            className="relative w-14 h-14 border border-slate-300 overflow-hidden shrink-0"
+                          >
+                             <img src={previewUrl} alt="Upload Preview" className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+                             <div className="absolute inset-0 bg-black/10 flex items-center justify-center transition-colors hover:bg-black/20">
+                                <MonitorPlay className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                             </div>
+                          </button>
+                          <div className="flex-grow overflow-hidden">
+                             <p className="text-[9px] font-bold text-slate-400 tracking-wider uppercase">File Selected</p>
+                             <p className="text-xs font-bold text-slate-900 truncate">{screenshot.name}</p>
+                             <button 
+                               type="button"
+                               onClick={() => {
+                                 setScreenshot(null);
+                                 if (previewUrl) URL.revokeObjectURL(previewUrl);
+                                 setPreviewUrl(null);
+                               }}
+                               className="text-[9px] font-bold text-red-500 uppercase tracking-widest hover:underline mt-0.5"
+                             >
+                               Remove & Replace
+                             </button>
+                          </div>
+                          <CheckCircle2 className="w-5 h-5 text-emerald-500 mr-2" />
+                       </div>
+                    )}
 
                     <div className="pt-6 mt-auto border-t border-slate-100 pb-2">
                       <button
@@ -749,8 +914,8 @@ const RegistrationSection = () => {
                         disabled={isSubmitting}
                         className={`w-full py-4 bg-primary text-white font-bold rounded-none text-base border-none ${isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-secondary'} transition-colors flex justify-center items-center gap-2`}
                       >
-                        <CheckCircle2 className="w-5 h-5" />
-                        {isSubmitting ? "Submitting Registration..." : "Submit Registration"}
+                        <ArrowRight className="w-5 h-5" />
+                        Proceed to Preview
                       </button>
                     </div>
 

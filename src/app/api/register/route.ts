@@ -5,16 +5,33 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
     
-    const name = formData.get('name') as string;
-    const email = formData.get('email') as string;
-    const phone = formData.get('phone') as string;
+    const name = formData.get('name')?.toString().trim();
+    const email = formData.get('email')?.toString().trim();
+    const phone = formData.get('phone')?.toString().trim();
     const screenshot = formData.get('screenshot') as File | null;
+    const honeypot = formData.get('confirm_email') as string; // Honeypot field
+
+    // 1. Honeypot check (security)
+    if (honeypot) {
+      return NextResponse.json({ success: true }, { status: 200 }); // Silently ignore bots
+    }
 
     if (!name || !email || !phone || !screenshot) {
       return NextResponse.json(
         { error: 'Missing required fields or screenshot' },
         { status: 400 }
       );
+    }
+
+    // 2. File size check (security: prevent large uploads)
+    if (screenshot.size > 1024 * 1024) {
+       return NextResponse.json({ error: 'File size too large (Max 1MB)' }, { status: 400 });
+    }
+
+    // 3. File type check (security: prevent malicious files)
+    const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf', 'image/webp', 'image/gif'];
+    if (!allowedTypes.includes(screenshot.type)) {
+       return NextResponse.json({ error: 'Invalid file type' }, { status: 400 });
     }
 
     // Convert the File object to a Buffer
