@@ -803,6 +803,7 @@ const RegistrationSection = () => {
                     >
                       Edit Information
                     </button>
+                  </div>
                 </>
               ) : (
                 <>
