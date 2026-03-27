@@ -13,7 +13,7 @@ import {
 
 // --- Sub-components ---
 
-const FadeInWhenVisible = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => {
+const FadeInWhenVisible = ({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) => {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -34,7 +34,7 @@ const FadeInWhenVisible = ({ children, delay = 0 }: { children: React.ReactNode,
       ref={ref}
       style={{ transitionDelay: `${delay}ms` }}
       className={`transition-all duration-1000 ease-out transform ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
-        }`}
+        } ${className}`}
     >
       {children}
     </div>
@@ -203,27 +203,19 @@ const Hero = () => (
           </div>
         </div>
 
-        <div className="relative flex justify-center items-end pt-0 lg:pt-10 animate-in fade-in zoom-in duration-1000 delay-150 order-first lg:order-last">
-          <div className="relative w-full max-w-[400px] aspect-[3/4] z-10">
-            <Image
-              src="/profile.webp"
-              alt="Dr. Kawita Bapat"
-              fill
-              className="object-contain object-bottom drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
-              priority
-              sizes="(max-width: 1024px) 100vw, 400px"
+        <div className="relative flex justify-center items-center pt-0 lg:pt-10 animate-in fade-in zoom-in duration-1000 delay-150 order-first lg:order-last">
+          <div className="relative w-full max-w-[550px] aspect-video z-10 rounded-[2.5rem] overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.6)] border border-white/10">
+            <video
+              src="/course_glance.mp4"
+              autoPlay
+              muted
+              loop
+              controls
+              playsInline
+              className="w-full h-full object-cover"
             />
-
-            {/* Floating Badge overlay for premium feel */}
-            <div className="absolute bottom-8 right-0 lg:-right-8 z-20 bg-white p-4 rounded-2xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] flex items-center gap-4 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-500 transform hover:-translate-y-1 transition-transform">
-              <div className="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center shrink-0">
-                <Award className="w-6 h-6" />
-              </div>
-              <div>
-                <h4 className="font-bold text-slate-900 text-sm">Expert Educator</h4>
-                <p className="text-xs text-slate-500 font-medium">38+ Years Experience</p>
-              </div>
-            </div>
+            {/* Overlay to ensure readability and premium feel */}
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent pointer-events-none"></div>
           </div>
         </div>
       </div>
@@ -261,57 +253,54 @@ const CredibilityStrip = () => (
 const CourseOverviewMerged = () => (
   <section id="overview" className="bg-slate-50 border-b border-slate-200 py-16 md:py-24">
     <div className="max-w-7xl mx-auto px-6 w-full">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-        <FadeInWhenVisible>
-          <div className="space-y-8 text-center lg:text-left flex flex-col items-center lg:items-start">
-            <div className="space-y-4">
-              <span className="text-primary text-xs font-semibold uppercase tracking-widest">Structured Approach</span>
-              <h2 className="text-3xl lg:text-4xl font-bold font-serif text-slate-900 leading-tight">A Structured Approach to Vaginal Surgery</h2>
-            </div>
-            <p className="text-base text-slate-600 leading-relaxed">
-              This program delivers a step-by-step understanding of vaginal surgery, starting from foundational anatomy to complete surgical execution and complication management.
-            </p>
-            <div className="p-6 bg-white rounded-none border-l-4 border-primary shadow-none space-y-4 hover:bg-slate-50 transition-colors">
-              <p className="text-sm font-semibold text-slate-800">The course focuses on practical clinical application, not theoretical discussion. Participants will learn:</p>
-              <ul className="space-y-3 w-fit mx-auto lg:mx-0 text-left">
-                {[
-                  "How to select appropriate cases",
-                  "How to perform procedures with clarity",
-                  "How to manage intra-operative challenges confidently"
-                ].map((it, i) => (
-                  <li key={i} className="flex items-start justify-start gap-3 text-sm text-slate-600">
-                    <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                    <span>{it}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </FadeInWhenVisible>
+      <FadeInWhenVisible>
+        <div className="text-center mb-16 space-y-4">
+          <span className="text-primary text-xs font-semibold uppercase tracking-widest block">Structured Approach</span>
+          <h2 className="text-3xl lg:text-5xl font-bold font-serif text-slate-900 leading-tight max-w-4xl mx-auto">A Structured Approach to Vaginal Surgery</h2>
+        </div>
+      </FadeInWhenVisible>
 
-        <FadeInWhenVisible delay={200}>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <FadeInWhenVisible delay={200} className="lg:col-span-5">
           <div className="flex flex-col gap-8">
-            {/* Inline video player transformed into thumbnail-popup */}
-            <div className="w-full bg-slate-100 border border-slate-200 aspect-video relative group rounded-[2.5rem] overflow-hidden shadow-lg">
-              <VideoThumbnailPlayer
-                videoSrc="/course_glance.mp4"
-                thumbnailSrc="/videothumb_1.jpg"
-                title="Course Overview Preview"
-              />
+            <div className="relative w-full max-w-[480px] aspect-[3/4] mx-auto animate-in fade-in zoom-in duration-1000 group">
+              {/* Decorative background for the image to make it feel less 'sidelined' */}
+              <div className="absolute inset-0 bg-primary/5 rounded-[3rem] -rotate-3 group-hover:rotate-0 transition-transform duration-700"></div>
+              
+              <div className="relative w-full h-full z-10">
+                <Image
+                  src="/profile.webp"
+                  alt="Dr. Kawita Bapat"
+                  fill
+                  className="object-contain object-bottom drop-shadow-[0_20px_50px_rgba(0,0,0,0.2)]"
+                  sizes="(max-width: 1024px) 100vw, 480px"
+                />
+
+                {/* Floating Badge overlay */}
+                <div className="absolute bottom-8 right-0 lg:-right-8 z-20 bg-white p-5 rounded-2xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] flex items-center gap-4 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-500 transform hover:-translate-y-1 transition-transform border border-slate-100">
+                  <div className="w-14 h-14 bg-primary/10 text-primary rounded-xl flex items-center justify-center shrink-0">
+                    <Award className="w-7 h-7" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-slate-900 text-sm">Expert Educator</h4>
+                    <p className="text-xs text-slate-500 font-medium">38+ Years Experience</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="p-8 bg-white rounded-none shadow-none border border-slate-200 space-y-6">
-              <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+            <div className="p-8 bg-white rounded-3xl shadow-xl border border-slate-100 space-y-6">
+              <div className="flex items-center gap-3 border-b border-slate-50 pb-4">
                 <BookOpen className="w-5 h-5 text-secondary" />
-                <h4 className="text-lg font-bold text-slate-800">Course Highlights & Format</h4>
+                <h4 className="text-lg font-bold text-slate-800">Course Highlights</h4>
               </div>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-slate-700 font-medium">
                 {[
                   "16 structured video modules",
                   "Practical tips from experience",
                   "100% online, self-paced",
-                  "Short, focused modules",
-                  "1-Year Access from Date of Registration",
+                  "1-Year Access included",
+                  "Certificate of Completion",
                   "Optional live Q&A sessions"
                 ].map((text, i) => (
                   <li key={i} className="flex items-start gap-2">
@@ -320,6 +309,49 @@ const CourseOverviewMerged = () => (
                   </li>
                 ))}
               </ul>
+            </div>
+          </div>
+        </FadeInWhenVisible>
+
+        <FadeInWhenVisible delay={100} className="lg:col-span-7">
+          <div className="space-y-10">
+            <div className="space-y-6">
+              <h3 className="text-2xl font-bold font-serif text-slate-900">Learn Simply Vaginal Surgery</h3>
+              <div className="space-y-5 text-slate-600 text-base leading-relaxed font-medium">
+                <p>
+                  &ldquo;Online Vaginal Surgery Course by Learn Simply Academy &ndash; this structured program includes 16 focused modules, each designed to take participants step-by-step from basic concepts to confident performance in the OT.
+                </p>
+                <p>
+                  The course begins with pelvic anatomy in a practical, surgeon-friendly way, so that every structure seen in the OT becomes crystal clear in the mind.
+                </p>
+                <p>
+                  It then moves into complete vaginal hysterectomy &ndash; pre-operative evaluation, case selection, positioning, instrument set-up, and step-by-step execution of the procedure. Real OT videos demonstrate each key step clearly, making it easy to visualise the entire operation.
+                </p>
+                <div className="p-6 bg-white border-l-4 border-secondary rounded-r-2xl shadow-sm my-6">
+                  <p className="font-bold text-slate-900 mb-2">Advanced Focus Area:</p>
+                  <p className="text-slate-600">
+                    Detailed focus on anticipating and handling complications &ndash; difficult bladder, frozen pelvis, large uterus, previous scars &ndash; and on taking safe, confident decisions when the case is not straightforward.
+                  </p>
+                </div>
+                <p>
+                  Beyond hysterectomy, the course includes other surgeries that can be done vaginally &ndash; such as prolapse surgeries, vault suspension procedures, repair surgeries and combined approaches &ndash; to showcase the full scope of vaginal surgery in routine practice.
+                </p>
+                <p>
+                  In addition, the modules discuss and demonstrate vaginal myomectomy, tubal ligation, management of selected ectopic cases, and ovarian and adnexal surgeries including broad-ligament fibroids, dermoid, isthmocele and scar endometriosis.
+                </p>
+                <p>
+                  The course also touches on procedures like cervical cerclage, Bartholin surgery, cosmetic vaginal procedures, Gartner&rsquo;s cyst and other commonly encountered vaginal operations, highlighting how versatile the vaginal route can be.
+                </p>
+              </div>
+
+              <div className="p-10 bg-slate-900 rounded-[2rem] border-l-[8px] border-secondary shadow-2xl space-y-4 transform hover:-translate-y-1 transition-all mt-10 relative overflow-hidden">
+                {/* Background accent */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-full -translate-y-16 translate-x-16 blur-3xl"></div>
+                
+                <p className="text-lg font-bold text-white leading-relaxed italic relative z-10">
+                  &ldquo;I am Dr. Kawita Bapat. This course is created for practicing gynecologists and postgraduates seeking structured, practical training in vaginal surgery with real OT videos and clear explanations. I invite you to join the first batch and upgrade confidence in the OT.&rdquo;
+                </p>
+              </div>
             </div>
           </div>
         </FadeInWhenVisible>
@@ -721,7 +753,7 @@ const RegistrationSection = () => {
               <div className="flex flex-col items-center gap-8 w-full">
                 <div className="w-full flex justify-center bg-white p-6 border border-slate-200 shadow-sm rounded-xl">
                   <Image
-                    src="/kb_scanner.jpeg"
+                    src="/lsa_qr.jpeg"
                     alt="Payment QR Code"
                     width={380}
                     height={380}
@@ -868,7 +900,7 @@ const RegistrationSection = () => {
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         className={`w-full p-3.5 bg-slate-50 border ${errors.phone ? 'border-red-400' : 'border-slate-300'} rounded-none text-sm font-semibold text-slate-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-none`}
-                        placeholder="+91 XXXX XXXX XX"
+                        placeholder="XXXXX XXXXX"
                       />
                       {errors.phone && <p className="text-xs text-red-500 font-bold ml-1">{errors.phone}</p>}
                     </div>
@@ -925,9 +957,17 @@ const RegistrationSection = () => {
                       </button>
                     </div>
 
-                    <p className="text-xs text-slate-500 font-semibold leading-relaxed text-center mt-2">
-                      Access will be provided via email within <br /><strong className="text-slate-700">24-48 hours</strong> after verification.
-                    </p>
+                    <div className="text-center mt-6 space-y-3">
+                      <p className="text-base font-bold text-slate-900 leading-tight">
+                        Need help or have a question about the course? <br />
+                        <span className="text-slate-600">Contact us - </span>
+                        <a href="tel:+917987382998" className="text-primary hover:text-secondary transition-colors">+91 79873 82998</a>
+                      </p>
+                      
+                      <p className="text-xs text-slate-500 font-semibold leading-relaxed">
+                        Access will be provided via email within <br /><strong className="text-slate-700">24-48 hours</strong> after verification.
+                      </p>
+                    </div>
                   </form>
                 </>
               )}
