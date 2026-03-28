@@ -19,9 +19,32 @@ const plexSerif = IBM_Plex_Serif({
 import { BackToTop } from "@/components/BackToTop";
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://learnsimplyacademy.com'),
   title: "Learn Simply Academy",
   description: "Master any skill with our structured, expert-led online masterclasses designed for deep understanding and career growth.",
   keywords: ["online education", "masterclass", "learn skills", "career growth", "self-paced learning"],
+  openGraph: {
+    title: "Learn Simply Academy",
+    description: "Master any skill with our structured, expert-led online masterclasses designed for deep understanding and career growth.",
+    url: 'https://learnsimplyacademy.com',
+    siteName: 'Learn Simply Academy',
+    images: [
+      {
+        url: '/learnsimply_logo.jpeg',
+        width: 1200,
+        height: 630,
+        alt: 'Learn Simply Academy Logo',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Learn Simply Academy',
+    description: 'Master any skill with our structured, expert-led online masterclasses designed for deep understanding and career growth.',
+    images: ['/learnsimply_logo.jpeg'],
+  },
 };
 
 export default function RootLayout({
