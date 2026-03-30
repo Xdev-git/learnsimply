@@ -266,7 +266,7 @@ const CourseOverviewMerged = () => (
             <div className="relative w-full max-w-[480px] aspect-[3/4] mx-auto animate-in fade-in zoom-in duration-1000 group">
               {/* Decorative background for the image to make it feel less 'sidelined' */}
               <div className="absolute inset-0 bg-primary/5 rounded-[3rem] -rotate-3 group-hover:rotate-0 transition-transform duration-700"></div>
-              
+
               <div className="relative w-full h-full z-10">
                 <Image
                   src="/profile.webp"
@@ -347,7 +347,7 @@ const CourseOverviewMerged = () => (
               <div className="p-10 bg-slate-900 rounded-[2rem] border-l-[8px] border-secondary shadow-2xl space-y-4 transform hover:-translate-y-1 transition-all mt-10 relative overflow-hidden">
                 {/* Background accent */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-full -translate-y-16 translate-x-16 blur-3xl"></div>
-                
+
                 <p className="text-lg font-bold text-white leading-relaxed italic relative z-10">
                   &ldquo;I am Dr. Kawita Bapat. This course is created for practicing gynecologists and postgraduates seeking structured, practical training in vaginal surgery with real OT videos and clear explanations. I invite you to join the first batch and upgrade confidence in the OT.&rdquo;
                 </p>
@@ -593,19 +593,12 @@ const TrustAndObjection = () => (
 
 const RegistrationSection = () => {
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", confirm_email: "" });
-  const [errors, setErrors] = useState({ name: "", email: "", phone: "", screenshot: "" });
-  const [screenshot, setScreenshot] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [errors, setErrors] = useState({ name: "", email: "", phone: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPreview, setIsPreview] = useState(false);
-  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
-  useEffect(() => {
-    return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-    };
-  }, [previewUrl]);
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -615,7 +608,7 @@ const RegistrationSection = () => {
       return;
     }
 
-    let newErrors = { name: "", email: "", phone: "", screenshot: "" };
+    let newErrors = { name: "", email: "", phone: "" };
     let isValid = true;
 
     if (!formData.name.trim()) {
@@ -639,26 +632,14 @@ const RegistrationSection = () => {
       isValid = false;
     }
 
-    if (!screenshot) {
-      newErrors.screenshot = "Payment screenshot is required";
-      isValid = false;
-    } else if (screenshot.size > 1024 * 1024) {
-      newErrors.screenshot = "Screenshot size must be less than 1MB";
-      isValid = false;
-    } else if (!['image/jpeg', 'image/png', 'application/pdf', 'image/webp', 'image/gif'].includes(screenshot.type)) {
-      newErrors.screenshot = "File must be jpeg, png, pdf, webp, or gif";
-      isValid = false;
-    }
-
     setErrors(newErrors);
 
-    if (isValid && screenshot) {
+    if (isValid) {
       setIsPreview(true);
     }
   };
 
   const handleFinalSubmit = () => {
-    if (!screenshot) return;
     setIsSubmitting(true);
 
     const submitData = new FormData();
@@ -666,7 +647,6 @@ const RegistrationSection = () => {
     submitData.append("email", formData.email);
     submitData.append("phone", formData.phone);
     submitData.append("confirm_email", formData.confirm_email); // Honeypot
-    submitData.append("screenshot", screenshot);
 
     fetch("/api/register", {
       method: "POST",
@@ -677,9 +657,6 @@ const RegistrationSection = () => {
         if (res.ok) {
           setSuccessMessage("Registration submitted! We will email you the access link within 24-48 hours after payment confirmation.");
           setFormData({ name: "", email: "", phone: "", confirm_email: "" });
-          setScreenshot(null);
-          if (previewUrl) URL.revokeObjectURL(previewUrl);
-          setPreviewUrl(null);
           setIsPreview(false);
         } else {
           const errorData = await res.json().catch(() => ({}));
@@ -698,32 +675,7 @@ const RegistrationSection = () => {
       {/* Subtle Background pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
 
-      {isImageModalOpen && previewUrl && (
-        createPortal(
-          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/95 p-4 animate-in fade-in duration-300">
-            <div className="relative max-w-4xl w-full h-full flex flex-col justify-center">
-              <button
-                onClick={() => setIsImageModalOpen(false)}
-                className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 text-white transition-colors rounded-none outline-none"
-              >
-                <XCircle className="w-8 h-8" />
-              </button>
-              <div className="w-full h-full flex items-center justify-center p-4">
-                <img
-                  src={previewUrl}
-                  alt="Payment Confirmation Full Preview"
-                  className="max-w-full max-h-full object-contain shadow-2xl"
-                />
-              </div>
-              <p className="text-center text-white/60 text-xs font-bold uppercase tracking-widest mt-4">
-                Click anywhere outside or the close button to return
-              </p>
-            </div>
-            <div className="absolute inset-0 -z-10" onClick={() => setIsImageModalOpen(false)} />
-          </div>,
-          document.body
-        )
-      )}
+
 
 
 
@@ -763,12 +715,50 @@ const RegistrationSection = () => {
                     className="max-w-[380px] object-contain rounded-md"
                   />
                 </div>
-                <div className="w-full p-6">
-                  <ol className="text-base font-medium text-slate-700 space-y-4 list-decimal pl-6 marker:font-bold marker:text-primary">
-                    <li>Scan the QR code to securely pay <strong className="text-slate-900">₹18,000</strong>.</li>
-                    <li>Save a screenshot of the successful transaction.</li>
-                    <li>Proceed to Step 2 to submit your details.</li>
-                  </ol>
+                <div className="w-full px-4 lg:px-8 mt-4">
+                  <div className="relative border-l-2 border-slate-200 ml-4 space-y-8 pb-4">
+
+                    {/* Step 1 */}
+                    <div className="relative pl-8">
+                      <div className="absolute -left-[17px] top-1 w-8 h-8 rounded-full bg-white border-2 border-primary text-primary flex items-center justify-center font-bold text-sm shadow-sm ring-4 ring-white">1</div>
+                      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-primary/30 transition-colors hover:shadow-md">
+                        <p className="font-bold text-slate-900 text-base mb-1">Scan & Pay</p>
+                        <p className="text-sm text-slate-600 font-medium">Scan the QR code above to securely pay <strong className="text-slate-900">₹18,000</strong>.</p>
+                      </div>
+                    </div>
+
+                    {/* Step 2 */}
+                    <div className="relative pl-8">
+                      <div className="absolute -left-[17px] top-1 w-8 h-8 rounded-full bg-white border-2 border-[#25D366] text-[#25D366] flex items-center justify-center font-bold text-sm shadow-sm ring-4 ring-white">2</div>
+                      <div className="bg-[#25D366]/5 p-5 rounded-2xl border border-[#25D366]/30 shadow-sm hover:border-[#25D366]/50 transition-colors hover:shadow-md relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-[#25D366]/10 rounded-full blur-2xl -translate-y-8 translate-x-8"></div>
+                        <p className="font-bold text-emerald-900 text-base mb-2 relative z-10">Share Screenshot</p>
+                        <p className="text-sm text-emerald-800 font-medium mb-4 relative z-10">Once successful, please send a screenshot of the transaction to WhatsApp.</p>
+                        <a
+                          href="https://wa.me/919826055666"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-5 py-3 bg-[#25D366] text-white rounded-xl hover:bg-[#20bd5a] transition-all font-bold shadow-lg shadow-[#25D366]/30 hover:shadow-xl hover:shadow-[#25D366]/40 hover:-translate-y-0.5 active:translate-y-0 w-full justify-center relative z-10"
+                        >
+                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 448 512">
+                            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.7 17.8 69.7 27.2 106.2 27.2h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.1 0-65.6-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.5-2.8-23.2-8.5-44.2-27.1-16.4-14.6-27.4-32.7-30.6-38.1-3.2-5.5-.3-8.5 2.5-11.2 2.5-2.5 5.5-6.4 8.3-9.6 2.8-3.2 3.7-5.5 5.6-9.2 1.9-3.7 1-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.8 23.5 9.2 31.5 11.8 13.3 4.2 25.4 3.6 35 2.2 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" />
+                          </svg>
+                          Message on WhatsApp
+                        </a>
+                        <p className="text-center text-xs text-emerald-800 font-bold mt-3 tracking-wider uppercase drop-shadow-sm">+91 98260 55666</p>
+                      </div>
+                    </div>
+
+                    {/* Step 3 */}
+                    <div className="relative pl-8">
+                      <div className="absolute -left-[17px] top-1 w-8 h-8 rounded-full bg-white border-2 border-primary text-primary flex items-center justify-center font-bold text-sm shadow-sm ring-4 ring-white">3</div>
+                      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-primary/30 transition-colors hover:shadow-md">
+                        <p className="font-bold text-slate-900 text-base mb-1">Submit Details</p>
+                        <p className="text-sm text-slate-600 font-medium">Then proceed to Step 2 on this page to submit your final details.</p>
+                      </div>
+                    </div>
+
+                  </div>
                 </div>
               </div>
 
@@ -796,42 +786,22 @@ const RegistrationSection = () => {
                     </div>
 
                     <div className="space-y-6 flex-grow">
-                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                        <div className="flex-grow space-y-4">
-                          <div>
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Full Name</p>
-                            <p className="text-base font-bold text-slate-900">{formData.name}</p>
-                          </div>
-                          <div>
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">WhatsApp</p>
-                            <p className="text-base font-bold text-slate-900">{formData.phone}</p>
-                          </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Full Name</p>
+                          <p className="text-base font-bold text-slate-900">{formData.name}</p>
                         </div>
-                        {previewUrl && screenshot?.type.startsWith('image/') && (
-                          <div className="shrink-0">
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">Payment Screenshot</p>
-                            <button
-                              type="button"
-                              onClick={() => setIsImageModalOpen(true)}
-                              className="group relative w-24 h-24 border-2 border-slate-200 hover:border-primary transition-colors overflow-hidden bg-slate-100"
-                            >
-                              <img src={previewUrl} alt="Preview" className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
-                              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                <PlayCircle className="w-6 h-6 text-white rotate-90" />
-                              </div>
-                            </button>
-                          </div>
-                        )}
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">WhatsApp</p>
+                          <p className="text-base font-bold text-slate-900">{formData.phone}</p>
+                        </div>
                       </div>
-                      <div className="pt-2 border-t border-slate-200">
+                      <div className="pt-4 border-t border-slate-100">
                         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Email Address</p>
                         <p className="text-base font-bold text-slate-900">{formData.email}</p>
                       </div>
                     </div>
-
                   </div>
-
-
 
                   <div className="pt-8 space-y-4 border-t border-slate-100 mt-6">
                     <button
@@ -857,7 +827,7 @@ const RegistrationSection = () => {
                 <>
                   <div className="mb-8 border-b border-slate-200 pb-4">
                     <h3 className="text-2xl font-bold font-serif text-slate-900 mb-2">2. Submit Registration</h3>
-                    <p className="text-sm font-medium text-slate-600">Please provide your details and attach payment proof.</p>
+                    <p className="text-sm font-medium text-slate-600">Please provide your details below.</p>
                   </div>
 
                   <form className="space-y-5 flex-grow" onSubmit={handleSubmit}>
@@ -905,46 +875,7 @@ const RegistrationSection = () => {
                       {errors.phone && <p className="text-xs text-red-500 font-bold ml-1">{errors.phone}</p>}
                     </div>
 
-                    <div className="space-y-1.5">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 ml-1">Payment Screenshot (Max 1MB)</label>
-                      <input
-                        type="file"
-                        accept=".jpg,.jpeg,.png,.pdf,.webp,.gif"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0] || null;
-                          setScreenshot(file);
-                          if (previewUrl) URL.revokeObjectURL(previewUrl);
-                          if (file && file.type.startsWith('image/')) {
-                            setPreviewUrl(URL.createObjectURL(file));
-                          } else {
-                            setPreviewUrl(null);
-                          }
-                          setErrors(prev => ({ ...prev, screenshot: "" }));
-                        }}
-                        className={`w-full bg-slate-50 border ${errors.screenshot ? 'border-red-400' : 'border-slate-300'} rounded-none text-sm font-medium text-slate-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-none file:mr-4 file:py-3.5 file:px-4 file:border-0 file:border-r file:border-slate-300 file:text-xs file:font-bold file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300 cursor-pointer p-0`}
-                      />
-                      {errors.screenshot && <p className="text-xs text-red-500 font-bold ml-1">{errors.screenshot}</p>}
-                    </div>
 
-                    {previewUrl && screenshot?.type.startsWith('image/') && (
-                      <div className="flex items-center gap-4 bg-slate-50 border border-slate-200 p-2 group transition-all hover:bg-white hover:shadow-sm">
-                        <button
-                          type="button"
-                          onClick={() => setIsImageModalOpen(true)}
-                          className="relative w-14 h-14 border border-slate-300 overflow-hidden shrink-0"
-                        >
-                          <img src={previewUrl} alt="Upload Preview" className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
-                          <div className="absolute inset-0 bg-black/10 flex items-center justify-center transition-colors hover:bg-black/20">
-                            <MonitorPlay className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                          </div>
-                        </button>
-                        <div className="flex-grow overflow-hidden">
-                          <p className="text-[9px] font-bold text-slate-400 tracking-wider uppercase">File Selected</p>
-                          <p className="text-xs font-bold text-slate-900 truncate">{screenshot.name}</p>
-                        </div>
-                        <CheckCircle2 className="w-5 h-5 text-emerald-500 mr-2" />
-                      </div>
-                    )}
 
                     <div className="pt-6 mt-auto border-t border-slate-100 pb-2">
                       <button
@@ -953,7 +884,7 @@ const RegistrationSection = () => {
                         className={`w-full py-4 bg-primary text-white font-bold rounded-none text-base border-none ${isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-secondary'} transition-colors flex justify-center items-center gap-2`}
                       >
                         <ArrowRight className="w-5 h-5" />
-                        Proceed to Preview
+                        Submit
                       </button>
                     </div>
 
@@ -963,7 +894,7 @@ const RegistrationSection = () => {
                         <span className="text-slate-600">Contact us - </span>
                         <a href="tel:+917987382998" className="text-primary hover:text-secondary transition-colors">+91 79873 82998</a>
                       </p>
-                      
+
                       <p className="text-xs text-slate-500 font-semibold leading-relaxed">
                         Access will be provided via email within <br /><strong className="text-slate-700">24-48 hours</strong> after verification.
                       </p>
