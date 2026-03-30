@@ -360,52 +360,83 @@ const CourseOverviewMerged = () => (
   </section>
 );
 
-const ModulesSection = () => (
-  <section id="curriculum" className="py-16 md:py-24 bg-white border-y border-slate-100 relative overflow-hidden">
-    {/* Decorative light gradient */}
-    <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
+const ModulesSection = () => {
+  const modules = [
+    { id: "01", title: "Pelvic Anatomy from Structure to Surgical Plan", desc: "Safe surgical planning, route selection by defining organ relationships for precise dissection" },
+    { id: "02", title: "Pelvic Anatomy from Structure to Surgical Plan", desc: "Safe surgical planning, route selection by defining organ relationships for precise dissection" },
+    { id: "03", title: "Pre Operative Assessment and Counseling", desc: "Structured clinical evaluation and clear communication to select the right cases and prepare patients safely for vaginal surgery." },
+    { id: "04", title: "Pre Operative Assessment and Counseling", desc: "Systematic risk assessment and patient-centered counseling to optimize safety, expectations and consent before vaginal surgery." },
+    { id: "05", title: "Operating Room Ergonomics: Positioning the Patient & Instruments", desc: "Optimising surgeon comfort, access and safety through correct patient positioning and smart instrument layout." },
+    { id: "06", title: "Vaginal Surgery Suture Sutureless and Electrocautery", desc: "Understanding energy-based and traditional techniques to choose between sutured, sutureless and electrocautery methods for safe vaginal surgery." },
+    { id: "07", title: "Vaginal Hysterectomy with Sutures", desc: "Mastering clamp-and-suture vaginal hysterectomy with safe pedicle control, secure haemostasis and reproducible stepwise technique." },
+    { id: "08", title: "Vaginal Hysterectomy for Non Descent (NDVH)", desc: "Stepwise, scarless vaginal hysterectomy for non-prolapsed uteri with emphasis on case selection, debulking and safety." },
+    { id: "09", title: "Vaginal Surgery with Adnexal Pathology", desc: "Safe, systematic techniques to manage benign adnexal masses and perform adnexectomy through the vaginal route" },
+    { id: "10", title: "Managing the Large Uterus", desc: "Practical strategies and debulking techniques to safely perform minimally invasive hysterectomy in patients with a large uterus" },
+    { id: "11", title: "Tips, Tricks and Pearls", desc: "Finely-honed practical pointers to make vaginal surgery safer, smoother and more confident in real-world practice" },
+    { id: "12", title: "Vaginal Route: More than Hysterectomy", desc: "Multiple other procedures (like salpingectomy ectopic ovarian pathology cervical and scar ectopic scar endometriosis, fistula, myomectomy, etc.) through the vaginal route" },
+    { id: "13", title: "Vaginal Route: More than Hysterectomy", desc: "Multiple other procedures (like salpingectomy ectopic ovarian pathology cervical and scar ectopic scar endometriosis, fistula, myomectomy, etc.) through the vaginal route" },
+    { id: "14", title: "Vaginal Surgery for Pelvic Organ Prolapse", desc: "Discussion of real clinical scenarios and surgical decisions." },
+    { id: "15", title: "Vaginal Surgery for Pelvic Organ Prolapse", desc: "Step-by-step native tissue vaginal repairs for cystocele, rectocele, uterine and vault prolapse with practical decision-making" },
+    { id: "15.B", title: "Vaginal Surgery for Pelvic Organ Prolapse", desc: "Step-by-step native tissue vaginal repairs for cystocele, rectocele, uterine and vault prolapse with practical decision-making" },
+    { id: "16", title: "The Grand Rounds", desc: "Real-life case-based vaginal surgery discussions with interactive problem-solving and decision-making." },
+    { id: "16.B", title: "The Grand Rounds", desc: "Real-life case-based vaginal surgery discussions with interactive problem-solving and decision-making." },
+  ];
 
-    <div className="max-w-6xl mx-auto px-6 w-full">
-      <FadeInWhenVisible>
-        <div className="text-center mb-16 space-y-4">
-          <span className="text-secondary text-xs font-bold uppercase tracking-widest block bg-secondary/10 inline-block px-4 py-1.5 rounded-full">Detailed Curriculum</span>
-          <h2 className="text-3xl lg:text-4xl font-bold font-serif text-slate-900">16 Structured Learning Modules</h2>
-          <p className="text-base text-slate-600 max-w-2xl mx-auto font-medium">Each module is designed to build progressive clarity and surgical confidence without overwhelming you.</p>
-        </div>
-      </FadeInWhenVisible>
+  return (
+    <section id="curriculum" className="py-16 md:py-24 bg-white border-y border-slate-100 relative overflow-hidden">
+      {/* Decorative light gradient */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
 
-      <FadeInWhenVisible delay={150}>
-        {/* Interactive 2-Column Curriculum List */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-4">
-          {[
-            "Principles of Vaginal Surgery", "Patient Selection & Pre-op", "OT Setup & Instruments", "Surgical Anatomy Overview",
-            "Vaginal Hysterectomy – Part 1", "Vaginal Hysterectomy – Part 2", "Managing Difficult Cases", "Advanced Vaginal Surgeries",
-            "Intra-op Complications", "Vaginal Vault Closure", "Basics of Prolapse Surgery", "Vaginal Repair Techniques",
-            "Combined Vaginal Procedures", "Case-Based Clinical Learning", "Surgical Tips & Pearls", "Final Review & Integration"
-          ].map((title, i) => (
-            <div key={i} className="group relative flex items-center justify-between p-4 px-6 bg-slate-50 border border-slate-200 rounded-2xl hover:bg-white hover:border-primary/50 hover:shadow-[0_15px_40px_-15px_rgba(169,59,112,0.3)] transition-all duration-300 cursor-pointer overflow-hidden transform hover:-translate-y-0.5">
-              {/* Interactive Left Highlighter */}
-              <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-slate-200 group-hover:bg-primary transition-colors duration-300"></div>
-
-              <div className="flex items-center gap-5">
-                <div className="w-12 h-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 group-hover:border-primary/30 group-hover:text-primary group-hover:scale-110 transition-all shadow-sm shrink-0">
-                  <PlayCircle className="w-6 h-6 ml-0.5" />
-                </div>
-                <div>
-                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 group-hover:text-primary transition-colors">Module {String(i + 1).padStart(2, '0')}</div>
-                  <h4 className="text-[15px] font-bold text-slate-800 group-hover:text-slate-900 transition-colors leading-snug">{title}</h4>
-                </div>
-              </div>
-              <div className="text-slate-300 group-hover:text-secondary opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-0 -translate-x-4 shrink-0 hidden sm:block">
-                <MonitorPlay className="w-6 h-6" />
-              </div>
+      <div className="max-w-7xl mx-auto px-6 w-full">
+        <FadeInWhenVisible>
+          <div className="text-center mb-16 space-y-6">
+            <span className="text-secondary text-xs font-bold uppercase tracking-widest block bg-secondary/10 inline-block px-4 py-1.5 rounded-none border border-secondary/20">Module Topics</span>
+            <h2 className="text-3xl lg:text-5xl font-bold font-serif text-slate-900 leading-tight">16 Structured Learning Modules</h2>
+            <div className="max-w-3xl mx-auto space-y-4">
+              <p className="text-lg text-slate-700 font-bold leading-relaxed">
+                The course is organized into 16 focused modules, designed to build a clear understanding of vaginal surgery from fundamentals to advanced decision-making.
+              </p>
+              <p className="text-base text-slate-500 font-medium leading-relaxed">
+                Each module delivers step-by-step surgical guidance, clinical insights, and practical operative tips.
+              </p>
             </div>
-          ))}
-        </div>
-      </FadeInWhenVisible>
-    </div>
-  </section>
-);
+          </div>
+        </FadeInWhenVisible>
+
+        <FadeInWhenVisible delay={150}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+            {modules.map((mod, i) => (
+              <div key={i} className="group relative flex flex-col p-8 bg-slate-50 border border-slate-200 rounded-none hover:bg-white hover:border-primary/50 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 cursor-pointer overflow-hidden transform hover:-translate-y-1">
+                {/* Interactive Indicator */}
+                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-slate-200 group-hover:bg-primary transition-all duration-500"></div>
+
+                <div className="flex items-start gap-6">
+                  <div className="w-14 h-14 rounded-none bg-white border border-slate-200 flex flex-col items-center justify-center group-hover:border-primary/30 transition-all duration-500 shadow-sm shrink-0">
+                    <span className="text-[10px] font-bold text-slate-400 group-hover:text-primary uppercase tracking-tighter">Mod</span>
+                    <span className="text-lg font-black text-slate-900 group-hover:text-primary transition-colors">{mod.id}</span>
+                  </div>
+                  <div className="space-y-3">
+                    <h4 className="text-lg font-bold text-slate-900 group-hover:text-primary transition-all duration-300 leading-snug">
+                      {mod.title}
+                    </h4>
+                    <p className="text-sm text-slate-600 font-medium leading-relaxed group-hover:text-slate-800 transition-colors">
+                      {mod.desc}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Subtle icon in corner */}
+                <div className="absolute bottom-4 right-4 text-slate-200 group-hover:text-primary/20 transition-all transform group-hover:scale-110 group-hover:rotate-12 duration-700">
+                  <PlayCircle className="w-8 h-8" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </FadeInWhenVisible>
+      </div>
+    </section>
+  );
+};
 
 const OutcomeSection = () => (
   <section id="what-to-learn" className="py-16 md:py-24 bg-slate-50 relative">
