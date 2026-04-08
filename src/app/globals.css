@@ -76,7 +76,23 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-.center .ls-section-heading::after {
-  left: 50%;
-  transform: translateX(-50%);
+@keyframes progress-indefinite {
+  0% { transform: translateX(-100%); width: 30%; }
+  50% { width: 100%; }
+  100% { transform: translateX(350%); width: 30%; }
+}
+
+.animate-progress-indefinite {
+  animation: progress-indefinite 2s infinite ease-in-out;
+}
+
+.animate-shake {
+  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
 }

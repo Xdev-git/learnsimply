@@ -9,6 +9,9 @@ export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const isAdminPage = pathname?.startsWith('/admin');
+
+  if (isAdminPage) return null;
 
   useEffect(() => {
     const handleScroll = () => {

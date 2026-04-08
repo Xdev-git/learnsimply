@@ -623,11 +623,29 @@ const TrustAndObjection = () => (
 );
 
 const RegistrationSection = () => {
-  const [formData, setFormData] = useState({ name: "", email: "", phone: "", confirm_email: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "", confirm_email: "", course: "Vaginal Surgeries" });
   const [errors, setErrors] = useState({ name: "", email: "", phone: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPreview, setIsPreview] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [refreshCountdown, setRefreshCountdown] = useState(0);
+
+  useEffect(() => {
+    if (successMessage) {
+      setRefreshCountdown(30);
+      const timer = setInterval(() => {
+        setRefreshCountdown(prev => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            window.location.reload();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [successMessage]);
 
 
 
@@ -677,6 +695,7 @@ const RegistrationSection = () => {
     submitData.append("name", formData.name);
     submitData.append("email", formData.email);
     submitData.append("phone", formData.phone);
+    submitData.append("course", formData.course);
     submitData.append("confirm_email", formData.confirm_email); // Honeypot
 
     fetch("/api/register", {
@@ -686,8 +705,8 @@ const RegistrationSection = () => {
       .then(async (res) => {
         setIsSubmitting(false);
         if (res.ok) {
-          setSuccessMessage("Registration submitted! We will email you the access link within 24-48 hours after payment confirmation.");
-          setFormData({ name: "", email: "", phone: "", confirm_email: "" });
+          setSuccessMessage("Registration submitted! A video link for the course will be sent to your registered email ID within 24-48 hours after payment confirmation.");
+          setFormData({ name: "", email: "", phone: "", confirm_email: "", course: "Vaginal Surgeries" });
           setIsPreview(false);
         } else {
           const errorData = await res.json().catch(() => ({}));
@@ -801,12 +820,24 @@ const RegistrationSection = () => {
           <FadeInWhenVisible delay={200}>
             <div className="bg-white rounded-none shadow-xl p-8 lg:p-12 border border-slate-200 h-full flex flex-col justify-between">
               {successMessage ? (
-                <div className="text-center py-16 flex flex-col justify-center h-full my-auto">
+                <div className="text-center py-16 flex flex-col justify-center h-full my-auto relative">
                   <div className="mx-auto w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-6">
                     <CheckCircle2 className="w-8 h-8 text-emerald-600" />
                   </div>
                   <h3 className="text-2xl font-bold font-serif text-slate-900 mb-4">Registration Successful</h3>
-                  <p className="text-slate-600 font-medium leading-relaxed">{successMessage}</p>
+                  <p className="text-slate-600 font-medium leading-relaxed mb-10">{successMessage}</p>
+                  
+                  <div className="max-w-xs mx-auto w-full space-y-3">
+                    <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-emerald-500 transition-all duration-1000 ease-linear" 
+                        style={{ width: `${(refreshCountdown / 30) * 100}%` }}
+                      ></div>
+                    </div>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                      Form will reset in {refreshCountdown} seconds...
+                    </p>
+                  </div>
                 </div>
               ) : isPreview ? (
                 <>
@@ -873,6 +904,8 @@ const RegistrationSection = () => {
                         autoComplete="off"
                       />
                     </div>
+                    {/* Course field - hidden */}
+                    <input type="hidden" name="course" value={formData.course} />
                     <div className="space-y-1.5">
                       <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 ml-1">Full Name</label>
                       <input
