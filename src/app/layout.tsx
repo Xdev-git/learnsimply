@@ -46,6 +46,9 @@ export const metadata: Metadata = {
     description: 'Master any skill with our structured, expert-led online masterclasses designed for deep understanding and career growth.',
     images: ['/learnsimply_logo.jpeg'],
   },
+  icons: {
+    icon: '/favicon.webp',
+  },
 };
 
 export default function RootLayout({
