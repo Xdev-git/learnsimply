@@ -194,11 +194,15 @@ const Hero = () => (
               }}
               className="inline-block px-8 py-4 bg-white text-black font-bold text-lg rounded-none hover:bg-slate-200 transition-colors shadow-none cursor-pointer"
             >
-              Register Now – ₹18,000
+              Register Now – $250<sup className="text-[10px] ml-0.5">*</sup> | ₹18,000<sup className="text-[10px] ml-0.5">#</sup>
             </a>
-            <div className="flex items-center gap-4 text-xs font-medium text-slate-300">
-              <span className="flex items-center gap-1"><Clock className="w-3 h-3 text-secondary" /> 1-Year Access from Date of Registration</span>
-              <span className="flex items-center gap-1"><Award className="w-3 h-3 text-secondary" /> Certificate included</span>
+            <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 flex flex-col sm:flex-row gap-x-6 gap-y-1">
+               <span><sup className="text-[10px]">*</sup> for international payments</span>
+               <span><sup className="text-[10px]">#</sup> for Indian Payments</span>
+            </div>
+            <div className="flex flex-col sm:flex-row items-center gap-4 text-sm font-semibold text-slate-200">
+              <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-secondary" /> 1-Year Access from Date of Registration</span>
+              <span className="flex items-center gap-2"><Award className="w-4 h-4 text-secondary" /> Certificate included</span>
             </div>
           </div>
         </div>
@@ -737,9 +741,15 @@ const RegistrationSection = () => {
           </h2>
           <div className="bg-slate-50 p-6 mb-8 flex flex-col items-center justify-center">
             <p className="text-slate-500 font-bold text-xs mb-3 uppercase tracking-widest flex items-center gap-2 justify-center"><Award className="w-4 h-4 text-primary" /> Launch Offer</p>
-            <div className="flex items-baseline justify-center gap-4 w-full">
-              <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">₹18,000</h2>
-              <p className="text-slate-400 font-bold line-through text-lg">₹22,000</p>
+            <div className="flex flex-col items-center gap-2 w-full">
+              <div className="flex items-baseline justify-center gap-4 w-full flex-wrap">
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">$250<sup className="text-xs ml-0.5">*</sup> | ₹18,000<sup className="text-xs ml-0.5">#</sup></h2>
+                <p className="text-slate-400 font-bold line-through text-lg">$299<sup className="text-[10px] ml-0.5">*</sup> | ₹22,000<sup className="text-[10px] ml-0.5">#</sup></p>
+              </div>
+              <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest text-center mt-4 space-y-1 sm:space-y-0 sm:flex sm:gap-6">
+                 <span><sup className="text-[10px] mr-1">*</sup> for international payments</span>
+                 <span><sup className="text-[10px] mr-1">#</sup> for Indian Payments</span>
+              </div>
             </div>
           </div>
         </div>
@@ -773,7 +783,7 @@ const RegistrationSection = () => {
                       <div className="absolute -left-[17px] top-1 w-8 h-8 rounded-full bg-white border-2 border-primary text-primary flex items-center justify-center font-bold text-sm shadow-sm ring-4 ring-white">1</div>
                       <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-primary/30 transition-colors hover:shadow-md">
                         <p className="font-bold text-slate-900 text-base mb-1">Scan & Pay</p>
-                        <p className="text-sm text-slate-600 font-medium">Scan the QR code above to securely pay <strong className="text-slate-900">₹18,000</strong>.</p>
+                        <p className="text-sm text-slate-600 font-medium">Scan the QR code above to securely pay <strong className="text-slate-900">$250<sup className="text-[10px] ml-0.5">*</sup> | ₹18,000<sup className="text-[10px] ml-0.5">#</sup></strong>.</p>
                       </div>
                     </div>
 
@@ -1027,6 +1037,9 @@ const Footer = () => (
       <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-semibold text-slate-500">
         <p>© {new Date().getFullYear()}, <a href="https://www.kawitabapat.com/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white underline underline-offset-4 decoration-slate-600 hover:decoration-white transition-all font-bold">Dr. Kawita Bapat</a>. All rights reserved.</p>
         <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-6 gap-y-2">
+          <div className="w-full text-center md:text-right mb-4 opacity-70">
+            <p className="text-[10px] font-bold uppercase tracking-widest">Course Fee: <sup className="text-[10px]">*</sup> International Payments | <sup className="text-[10px]">#</sup> Indian Payments</p>
+          </div>
           <Link href="/legal/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link>
           <Link href="/legal/terms" className="hover:text-primary transition-colors">Terms of Use</Link>
           <Link href="/legal/disclaimer" className="hover:text-primary transition-colors">Disclaimer</Link>

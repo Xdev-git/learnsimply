@@ -95,11 +95,9 @@ function CheckoutContent() {
                       <div className="pt-6">
                          <button onClick={handleSimulatePayment} disabled={isProcessing} className={`w-full py-5 text-lg ${isProcessing ? 'bg-primary/70 cursor-wait' : 'bg-primary hover:bg-secondary hover:-translate-y-1 hover:shadow-xl'} text-white font-bold rounded-2xl transition-all flex items-center justify-center gap-3`}>
                              {isProcessing ? <Clock className="w-5 h-5 animate-spin" /> : <Lock className="w-5 h-5" />}
-                             {isProcessing ? "Processing Secure Payment..." : "Pay ₹18,000"}
+                             {isProcessing ? "Processing Secure Payment..." : "Pay $250<sup className=\"text-[10px] ml-0.5\">*</sup> | ₹18,000<sup className=\"text-[10px] ml-0.5\">#</sup>"}
                          </button>
-                      </div>
-
-                      <p className="text-[11px] font-bold text-slate-400 text-center uppercase tracking-widest mt-6">
+                      </div>                      <p className="text-[11px] font-bold text-slate-400 text-center uppercase tracking-widest mt-6">
                          Encrypted & Secured by PCI DSS Compliant Network
                       </p>
                    </form>
@@ -129,15 +127,19 @@ function CheckoutContent() {
                     <div className="border-t border-white/20 mt-8 pt-6 relative z-10">
                        <div className="flex justify-between items-center mb-4">
                           <span className="text-sm font-bold text-slate-300">Original Price</span>
-                          <span className="text-sm font-bold text-slate-400 line-through">₹22,000</span>
+                          <span className="text-sm font-bold text-slate-400 line-through">$299<sup className="text-[10px] ml-0.5">*</sup> | ₹22,000<sup className="text-[10px] ml-0.5">#</sup></span>
                        </div>
                        <div className="flex justify-between items-center mb-4">
                           <span className="text-sm font-bold text-slate-300">Launch Discount</span>
-                          <span className="text-sm font-bold text-emerald-400">-₹4,000</span>
+                          <span className="text-sm font-bold text-emerald-400">-$49<sup className="text-[10px] ml-0.5">*</sup> | -₹4,000<sup className="text-[10px] ml-0.5">#</sup></span>
                        </div>
                        <div className="flex justify-between items-center mt-6 pt-4 border-t border-white/20 text-xl">
                           <span className="font-bold font-serif">Total Due</span>
-                          <span className="font-extrabold text-secondary">₹18,000</span>
+                          <span className="font-extrabold text-secondary">$250<sup className="text-[10px] ml-0.5">*</sup> | ₹18,000<sup className="text-[10px] ml-0.5">#</sup></span>
+                       </div>
+                       <div className="mt-8 pt-4 border-t border-white/10 text-[10px] text-slate-400 font-bold uppercase tracking-widest text-center space-y-1">
+                          <p><sup className="text-[10px]">*</sup> for international payments</p>
+                          <p><sup className="text-[10px]">#</sup> for Indian Payments</p>
                        </div>
                     </div>
                 </div>
