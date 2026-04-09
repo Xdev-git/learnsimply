@@ -47,7 +47,11 @@ export const metadata: Metadata = {
     images: ['/learnsimply_logo.jpeg'],
   },
   icons: {
-    icon: '/favicon.webp',
+    icon: [
+      { url: '/favicon.webp', type: 'image/webp' },
+    ],
+    shortcut: '/favicon.webp',
+    apple: '/favicon.webp',
   },
 };
 
