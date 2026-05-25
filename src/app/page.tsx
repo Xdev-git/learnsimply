@@ -211,8 +211,6 @@ const Hero = () => (
           <div className="relative w-full max-w-[550px] aspect-video z-10 rounded-[2.5rem] overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.6)] border border-white/10">
             <video
               src="/course_glance.mp4"
-              autoPlay
-              muted
               loop
               controls
               playsInline
