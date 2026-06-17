@@ -197,8 +197,8 @@ const Hero = () => (
               Register Now – $250<sup className="text-[10px] ml-0.5">*</sup> | ₹18,000<sup className="text-[10px] ml-0.5">#</sup>
             </a>
             <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 flex flex-col sm:flex-row gap-x-6 gap-y-1">
-               <span><sup className="text-[10px]">*</sup> for international payments</span>
-               <span><sup className="text-[10px]">#</sup> for Indian Payments</span>
+              <span><sup className="text-[10px]">*</sup> for international payments</span>
+              <span><sup className="text-[10px]">#</sup> for Indian Payments</span>
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-4 text-sm font-semibold text-slate-200">
               <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-secondary" /> 1-Year Access from Date of Registration</span>
@@ -745,8 +745,8 @@ const RegistrationSection = () => {
                 <p className="text-slate-400 font-bold line-through text-lg">$299<sup className="text-[10px] ml-0.5">*</sup> | ₹22,000<sup className="text-[10px] ml-0.5">#</sup></p>
               </div>
               <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest text-center mt-4 space-y-1 sm:space-y-0 sm:flex sm:gap-6">
-                 <span><sup className="text-[10px] mr-1">*</sup> for international payments</span>
-                 <span><sup className="text-[10px] mr-1">#</sup> for Indian Payments</span>
+                <span><sup className="text-[10px] mr-1">*</sup> for international payments</span>
+                <span><sup className="text-[10px] mr-1">#</sup> for Indian Payments</span>
               </div>
             </div>
           </div>
@@ -779,9 +779,20 @@ const RegistrationSection = () => {
                     {/* Step 1 */}
                     <div className="relative pl-8">
                       <div className="absolute -left-[17px] top-1 w-8 h-8 rounded-full bg-white border-2 border-primary text-primary flex items-center justify-center font-bold text-sm shadow-sm ring-4 ring-white">1</div>
-                      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-primary/30 transition-colors hover:shadow-md">
-                        <p className="font-bold text-slate-900 text-base mb-1">Scan & Pay</p>
-                        <p className="text-sm text-slate-600 font-medium">Scan the QR code above to securely pay <strong className="text-slate-900">$250<sup className="text-[10px] ml-0.5">*</sup> | ₹18,000<sup className="text-[10px] ml-0.5">#</sup></strong>.</p>
+                      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-primary/30 transition-colors hover:shadow-md space-y-4">
+                        <div>
+                          <p className="font-bold text-slate-900 text-base mb-1">Scan & Pay</p>
+                          <p className="text-sm text-slate-600 font-medium">Scan the QR code above to securely pay <strong className="text-slate-900">$250<sup className="text-[10px] ml-0.5">*</sup> | ₹18,000<sup className="text-[10px] ml-0.5">#</sup></strong>.</p>
+                        </div>
+                        <div className="border-t border-slate-100 pt-3">
+                          <p className="font-bold text-slate-900 text-sm mb-1.5">For direct Bank transfer</p>
+                          <div className="text-xs text-slate-600 font-medium space-y-1 bg-slate-50/70 p-3 rounded-lg border border-slate-100">
+                            <p className="font-bold text-slate-800">LEARN SIMPLY ACADEMY</p>
+                            <p>A/C No. <span className="font-mono font-bold text-slate-950">542905000172</span></p>
+                            <p>IFS Code - <span className="font-mono font-bold text-slate-950">ICICI0005429</span></p>
+                            <p>ICICI Bank - brilliant convention center Indore</p>
+                          </div>
+                        </div>
                       </div>
                     </div>
 
@@ -834,11 +845,11 @@ const RegistrationSection = () => {
                   </div>
                   <h3 className="text-2xl font-bold font-serif text-slate-900 mb-4">Registration Successful</h3>
                   <p className="text-slate-600 font-medium leading-relaxed mb-10">{successMessage}</p>
-                  
+
                   <div className="max-w-xs mx-auto w-full space-y-3">
                     <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-emerald-500 transition-all duration-1000 ease-linear" 
+                      <div
+                        className="h-full bg-emerald-500 transition-all duration-1000 ease-linear"
                         style={{ width: `${(refreshCountdown / 30) * 100}%` }}
                       ></div>
                     </div>
