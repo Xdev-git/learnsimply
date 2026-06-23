@@ -194,12 +194,8 @@ const Hero = () => (
               }}
               className="inline-block px-8 py-4 bg-white text-black font-bold text-lg rounded-none hover:bg-slate-200 transition-colors shadow-none cursor-pointer"
             >
-              Register Now – $250<sup className="text-[10px] ml-0.5">*</sup> | ₹18,000<sup className="text-[10px] ml-0.5">#</sup>
+              Register Now – ₹18,000
             </a>
-            <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 flex flex-col sm:flex-row gap-x-6 gap-y-1">
-              <span><sup className="text-[10px]">*</sup> for international payments</span>
-              <span><sup className="text-[10px]">#</sup> for Indian Payments</span>
-            </div>
             <div className="flex flex-col sm:flex-row items-center gap-4 text-sm font-semibold text-slate-200">
               <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-secondary" /> 1-Year Access from Date of Registration</span>
               <span className="flex items-center gap-2"><Award className="w-4 h-4 text-secondary" /> Certificate included</span>
@@ -209,15 +205,11 @@ const Hero = () => (
 
         <div className="relative flex justify-center items-center pt-0 lg:pt-10 animate-in fade-in zoom-in duration-1000 delay-150 order-first lg:order-last">
           <div className="relative w-full max-w-[550px] aspect-video z-10 rounded-[2.5rem] overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.6)] border border-white/10">
-            <video
-              src="/course_glance.mp4"
-              loop
-              controls
-              playsInline
-              className="w-full h-full object-cover"
+            <VideoThumbnailPlayer
+              videoSrc="/course_glance.mp4"
+              thumbnailSrc="/videothumb_1.jpg"
+              title="Course Glance Preview"
             />
-            {/* Overlay to ensure readability and premium feel */}
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent pointer-events-none"></div>
           </div>
         </div>
       </div>
@@ -628,36 +620,9 @@ const RegistrationSection = () => {
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", confirm_email: "", course: "Vaginal Surgeries" });
   const [errors, setErrors] = useState({ name: "", email: "", phone: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isPreview, setIsPreview] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [refreshCountdown, setRefreshCountdown] = useState(0);
-
-  useEffect(() => {
-    if (successMessage) {
-      setRefreshCountdown(30);
-      const timer = setInterval(() => {
-        setRefreshCountdown(prev => {
-          if (prev <= 1) {
-            clearInterval(timer);
-            window.location.reload();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-      return () => clearInterval(timer);
-    }
-  }, [successMessage]);
-
-
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (isPreview) {
-      handleFinalSubmit();
-      return;
-    }
 
     let newErrors = { name: "", email: "", phone: "" };
     let isValid = true;
@@ -686,7 +651,7 @@ const RegistrationSection = () => {
     setErrors(newErrors);
 
     if (isValid) {
-      setIsPreview(true);
+      handleFinalSubmit();
     }
   };
 
@@ -707,9 +672,12 @@ const RegistrationSection = () => {
       .then(async (res) => {
         setIsSubmitting(false);
         if (res.ok) {
-          setSuccessMessage("Registration submitted! A video link for the course will be sent to your registered email ID within 24-48 hours after payment confirmation.");
-          setFormData({ name: "", email: "", phone: "", confirm_email: "", course: "Vaginal Surgeries" });
-          setIsPreview(false);
+          // Redirect to checkout with details
+          const params = new URLSearchParams();
+          params.append("name", formData.name);
+          params.append("email", formData.email);
+          params.append("phone", formData.phone);
+          window.location.href = `/checkout?${params.toString()}`;
         } else {
           const errorData = await res.json().catch(() => ({}));
           alert(`Error: ${errorData.error || "Submission failed. Please try again."}`);
@@ -727,266 +695,97 @@ const RegistrationSection = () => {
       {/* Subtle Background pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
 
-
-
-
-
-      <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-6">
+      <div className="max-w-3xl mx-auto px-6 w-full relative z-10">
+        <div className="text-center mb-12 space-y-6">
           <span className="text-primary text-xs font-bold uppercase tracking-widest block border border-primary/20 inline-block px-4 py-2 bg-white shadow-sm">Secure Enrollment</span>
           <h2 className="text-3xl lg:text-5xl font-bold font-serif leading-tight tracking-wide text-slate-900 drop-shadow-sm">
             Enroll in the <span className="text-primary">Vaginal Surgeries Online Course</span>
           </h2>
-          <div className="bg-slate-50 p-6 mb-8 flex flex-col items-center justify-center">
+          <div className="bg-slate-100/50 p-6 rounded-[2rem] border border-slate-200 flex flex-col items-center justify-center max-w-xl mx-auto">
             <p className="text-slate-500 font-bold text-xs mb-3 uppercase tracking-widest flex items-center gap-2 justify-center"><Award className="w-4 h-4 text-primary" /> Launch Offer</p>
-            <div className="flex flex-col items-center gap-2 w-full">
               <div className="flex items-baseline justify-center gap-4 w-full flex-wrap">
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">$250<sup className="text-xs ml-0.5">*</sup> | ₹18,000<sup className="text-xs ml-0.5">#</sup></h2>
-                <p className="text-slate-400 font-bold line-through text-lg">$299<sup className="text-[10px] ml-0.5">*</sup> | ₹22,000<sup className="text-[10px] ml-0.5">#</sup></p>
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">₹18,000</h2>
+                <p className="text-slate-400 font-bold line-through text-lg">₹22,000</p>
               </div>
-              <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest text-center mt-4 space-y-1 sm:space-y-0 sm:flex sm:gap-6">
-                <span><sup className="text-[10px] mr-1">*</sup> for international payments</span>
-                <span><sup className="text-[10px] mr-1">#</sup> for Indian Payments</span>
-              </div>
-            </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-          {/* Left Column: Payment Instructions & Details */}
-          <FadeInWhenVisible>
-            <div className="bg-white rounded-none shadow-xl p-8 lg:p-12 border border-slate-200">
-              <h3 className="text-2xl font-bold font-serif text-slate-900 mb-6 border-b border-slate-200 pb-4">1. Complete Payment</h3>
+        <div className="bg-white rounded-[2.5rem] shadow-xl p-8 lg:p-12 border border-slate-200">
+          <div className="mb-8 border-b border-slate-200 pb-4 text-center">
+            <h3 className="text-2xl font-bold font-serif text-slate-900 mb-2">Registration Details</h3>
+            <p className="text-sm font-medium text-slate-600">Please provide your details below to proceed to secure checkout.</p>
+          </div>
 
-
-
-              <div className="flex flex-col items-center gap-8 w-full">
-                <div className="w-full flex justify-center bg-white p-6 border border-slate-200 shadow-sm rounded-xl">
-                  <Image
-                    src="/lsa_qr.jpeg"
-                    alt="Payment QR Code"
-                    width={380}
-                    height={380}
-                    loading="eager"
-                    priority
-                    style={{ width: '100%', height: 'auto' }}
-                    className="max-w-[380px] object-contain rounded-md"
-                  />
-                </div>
-                <div className="w-full px-4 lg:px-8 mt-4">
-                  <div className="relative border-l-2 border-slate-200 ml-4 space-y-8 pb-4">
-
-                    {/* Step 1 */}
-                    <div className="relative pl-8">
-                      <div className="absolute -left-[17px] top-1 w-8 h-8 rounded-full bg-white border-2 border-primary text-primary flex items-center justify-center font-bold text-sm shadow-sm ring-4 ring-white">1</div>
-                      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-primary/30 transition-colors hover:shadow-md space-y-4">
-                        <div>
-                          <p className="font-bold text-slate-900 text-base mb-1">Scan & Pay</p>
-                          <p className="text-sm text-slate-600 font-medium">Scan the QR code above to securely pay <strong className="text-slate-900">$250<sup className="text-[10px] ml-0.5">*</sup> | ₹18,000<sup className="text-[10px] ml-0.5">#</sup></strong>.</p>
-                        </div>
-                        <div className="border-t border-slate-100 pt-3">
-                          <p className="font-bold text-slate-900 text-sm mb-1.5">For direct Bank transfer</p>
-                          <div className="text-xs text-slate-600 font-medium space-y-1 bg-slate-50/70 p-3 rounded-lg border border-slate-100">
-                            <p className="font-bold text-slate-800">LEARN SIMPLY ACADEMY</p>
-                            <p>A/C No. <span className="font-mono font-bold text-slate-950">542905000172</span></p>
-                            <p>IFS Code - <span className="font-mono font-bold text-slate-950">ICICI0005429</span></p>
-                            <p>ICICI Bank - brilliant convention center Indore</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Step 2 */}
-                    <div className="relative pl-8">
-                      <div className="absolute -left-[17px] top-1 w-8 h-8 rounded-full bg-white border-2 border-[#25D366] text-[#25D366] flex items-center justify-center font-bold text-sm shadow-sm ring-4 ring-white">2</div>
-                      <div className="bg-[#25D366]/5 p-5 rounded-2xl border border-[#25D366]/30 shadow-sm hover:border-[#25D366]/50 transition-colors hover:shadow-md relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-24 h-24 bg-[#25D366]/10 rounded-full blur-2xl -translate-y-8 translate-x-8"></div>
-                        <p className="font-bold text-emerald-900 text-base mb-2 relative z-10">Share Screenshot</p>
-                        <p className="text-sm text-emerald-800 font-medium mb-4 relative z-10">Once successful, please send a screenshot of the transaction to WhatsApp.</p>
-                        <a
-                          href="https://wa.me/919826055666"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-5 py-3 bg-[#25D366] text-white rounded-xl hover:bg-[#20bd5a] transition-all font-bold shadow-lg shadow-[#25D366]/30 hover:shadow-xl hover:shadow-[#25D366]/40 hover:-translate-y-0.5 active:translate-y-0 w-full justify-center relative z-10"
-                        >
-                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 448 512">
-                            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.7 17.8 69.7 27.2 106.2 27.2h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.1 0-65.6-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.5-2.8-23.2-8.5-44.2-27.1-16.4-14.6-27.4-32.7-30.6-38.1-3.2-5.5-.3-8.5 2.5-11.2 2.5-2.5 5.5-6.4 8.3-9.6 2.8-3.2 3.7-5.5 5.6-9.2 1.9-3.7 1-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.8 23.5 9.2 31.5 11.8 13.3 4.2 25.4 3.6 35 2.2 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" />
-                          </svg>
-                          Message on WhatsApp
-                        </a>
-                        <p className="text-center text-xs text-emerald-800 font-bold mt-3 tracking-wider uppercase drop-shadow-sm">+91 98260 55666</p>
-                      </div>
-                    </div>
-
-                    {/* Step 3 */}
-                    <div className="relative pl-8">
-                      <div className="absolute -left-[17px] top-1 w-8 h-8 rounded-full bg-white border-2 border-primary text-primary flex items-center justify-center font-bold text-sm shadow-sm ring-4 ring-white">3</div>
-                      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-primary/30 transition-colors hover:shadow-md">
-                        <p className="font-bold text-slate-900 text-base mb-1">Submit Details</p>
-                        <p className="text-sm text-slate-600 font-medium">Then proceed to Step 2 on this page to submit your final details.</p>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-
-
+          <form className="space-y-5" onSubmit={handleSubmit}>
+            {/* Honeypot field - hidden from users */}
+            <div className="hidden" aria-hidden="true">
+              <input
+                type="text"
+                name="confirm_email"
+                value={formData.confirm_email}
+                onChange={(e) => setFormData({ ...formData, confirm_email: e.target.value })}
+                tabIndex={-1}
+                autoComplete="off"
+              />
             </div>
-          </FadeInWhenVisible>
-
-          {/* Right Column: Registration Form */}
-          <FadeInWhenVisible delay={200}>
-            <div className="bg-white rounded-none shadow-xl p-8 lg:p-12 border border-slate-200 h-full flex flex-col justify-between">
-              {successMessage ? (
-                <div className="text-center py-16 flex flex-col justify-center h-full my-auto relative">
-                  <div className="mx-auto w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-6">
-                    <CheckCircle2 className="w-8 h-8 text-emerald-600" />
-                  </div>
-                  <h3 className="text-2xl font-bold font-serif text-slate-900 mb-4">Registration Successful</h3>
-                  <p className="text-slate-600 font-medium leading-relaxed mb-10">{successMessage}</p>
-
-                  <div className="max-w-xs mx-auto w-full space-y-3">
-                    <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-emerald-500 transition-all duration-1000 ease-linear"
-                        style={{ width: `${(refreshCountdown / 30) * 100}%` }}
-                      ></div>
-                    </div>
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                      Form will reset in {refreshCountdown} seconds...
-                    </p>
-                  </div>
-                </div>
-              ) : isPreview ? (
-                <>
-                  <div className="flex flex-col h-full">
-                    <div className="mb-6 border-b border-slate-200 pb-4">
-                      <h3 className="text-2xl font-bold font-serif text-slate-900 mb-2">Review Your Details</h3>
-                      <p className="text-sm font-medium text-slate-600">Please confirm your information before final submission.</p>
-                    </div>
-
-                    <div className="space-y-6 flex-grow">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Full Name</p>
-                          <p className="text-base font-bold text-slate-900">{formData.name}</p>
-                        </div>
-                        <div>
-                          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">WhatsApp</p>
-                          <p className="text-base font-bold text-slate-900">{formData.phone}</p>
-                        </div>
-                      </div>
-                      <div className="pt-4 border-t border-slate-100">
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Email Address</p>
-                        <p className="text-base font-bold text-slate-900">{formData.email}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="pt-8 space-y-4 border-t border-slate-100 mt-6">
-                    <button
-                      type="button"
-                      disabled={isSubmitting}
-                      onClick={handleFinalSubmit}
-                      className={`w-full py-4 bg-primary text-white font-bold rounded-none text-base border-none ${isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-secondary'} transition-colors flex justify-center items-center gap-2`}
-                    >
-                      <ShieldCheck className="w-5 h-5" />
-                      {isSubmitting ? "Finalizing..." : "Confirm & Submit"}
-                    </button>
-                    <button
-                      type="button"
-                      disabled={isSubmitting}
-                      onClick={() => setIsPreview(false)}
-                      className="w-full py-3 bg-white text-slate-600 font-bold rounded-none text-sm border border-slate-200 hover:bg-slate-50 transition-colors uppercase tracking-widest"
-                    >
-                      Edit Information
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="mb-8 border-b border-slate-200 pb-4">
-                    <h3 className="text-2xl font-bold font-serif text-slate-900 mb-2">2. Submit Registration</h3>
-                    <p className="text-sm font-medium text-slate-600">Please provide your details below.</p>
-                  </div>
-
-                  <form className="space-y-5 flex-grow" onSubmit={handleSubmit}>
-                    {/* Honeypot field - hidden from users */}
-                    <div className="hidden" aria-hidden="true">
-                      <input
-                        type="text"
-                        name="confirm_email"
-                        value={formData.confirm_email}
-                        onChange={(e) => setFormData({ ...formData, confirm_email: e.target.value })}
-                        tabIndex={-1}
-                        autoComplete="off"
-                      />
-                    </div>
-                    {/* Course field - hidden */}
-                    <input type="hidden" name="course" value={formData.course} />
-                    <div className="space-y-1.5">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 ml-1">Full Name</label>
-                      <input
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className={`w-full p-3.5 bg-slate-50 border ${errors.name ? 'border-red-400' : 'border-slate-300'} rounded-none text-sm font-semibold text-slate-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-none`}
-                        placeholder="Dr. First Last Name"
-                      />
-                      {errors.name && <p className="text-xs text-red-500 font-bold ml-1">{errors.name}</p>}
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 ml-1">Email Address</label>
-                      <input
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className={`w-full p-3.5 bg-slate-50 border ${errors.email ? 'border-red-400' : 'border-slate-300'} rounded-none text-sm font-semibold text-slate-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-none`}
-                        placeholder="dr.name@hospital.com"
-                      />
-                      {errors.email && <p className="text-xs text-red-500 font-bold ml-1">{errors.email}</p>}
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 ml-1">WhatsApp Number</label>
-                      <input
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className={`w-full p-3.5 bg-slate-50 border ${errors.phone ? 'border-red-400' : 'border-slate-300'} rounded-none text-sm font-semibold text-slate-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-none`}
-                        placeholder="XXXXX XXXXX"
-                      />
-                      {errors.phone && <p className="text-xs text-red-500 font-bold ml-1">{errors.phone}</p>}
-                    </div>
-
-
-
-                    <div className="pt-6 mt-auto border-t border-slate-100 pb-2">
-                      <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className={`w-full py-4 bg-primary text-white font-bold rounded-none text-base border-none ${isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-secondary'} transition-colors flex justify-center items-center gap-2`}
-                      >
-                        <ArrowRight className="w-5 h-5" />
-                        Submit
-                      </button>
-                    </div>
-
-                    <div className="text-center mt-6 space-y-3">
-                      <p className="text-base font-bold text-slate-900 leading-tight">
-                        Need help or have a question about the course? <br />
-                        <span className="text-slate-600">Contact us - </span>
-                        <a href="tel:+917987382998" className="text-primary hover:text-secondary transition-colors">+91 79873 82998</a>
-                      </p>
-
-                      <p className="text-xs text-slate-500 font-semibold leading-relaxed">
-                        Access will be provided via email within <br /><strong className="text-slate-700">24-48 hours</strong> after verification.
-                      </p>
-                    </div>
-                  </form>
-                </>
-              )}
+            {/* Course field - hidden */}
+            <input type="hidden" name="course" value={formData.course} />
+            <div className="space-y-1.5">
+              <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 ml-1">Full Name</label>
+              <input
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                className={`w-full p-3.5 bg-slate-50 border ${errors.name ? 'border-red-400' : 'border-slate-300'} rounded-xl text-sm font-semibold text-slate-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-none`}
+                placeholder="Dr. First Last Name"
+              />
+              {errors.name && <p className="text-xs text-red-500 font-bold ml-1">{errors.name}</p>}
             </div>
-          </FadeInWhenVisible>
+
+            <div className="space-y-1.5">
+              <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 ml-1">Email Address</label>
+              <input
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className={`w-full p-3.5 bg-slate-50 border ${errors.email ? 'border-red-400' : 'border-slate-300'} rounded-xl text-sm font-semibold text-slate-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-none`}
+                placeholder="dr.name@hospital.com"
+              />
+              {errors.email && <p className="text-xs text-red-500 font-bold ml-1">{errors.email}</p>}
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 ml-1">WhatsApp Number</label>
+              <input
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                className={`w-full p-3.5 bg-slate-50 border ${errors.phone ? 'border-red-400' : 'border-slate-300'} rounded-xl text-sm font-semibold text-slate-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-none`}
+                placeholder="XXXXX XXXXX"
+              />
+              {errors.phone && <p className="text-xs text-red-500 font-bold ml-1">{errors.phone}</p>}
+            </div>
+
+            <div className="pt-6 mt-6 border-t border-slate-100">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`w-full py-4 bg-primary text-white font-bold rounded-xl text-base border-none ${isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-secondary hover:-translate-y-0.5 hover:shadow-lg'} transition-all flex justify-center items-center gap-2`}
+              >
+                {isSubmitting ? "Redirecting to Payment Gateway..." : "Proceed to Payment"}
+                <ArrowRight className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="text-center mt-6 space-y-3">
+              <p className="text-base font-bold text-slate-900 leading-tight">
+                Need help or have a question about the course? <br />
+                <span className="text-slate-600">Contact us - </span>
+                <a href="tel:+917987382998" className="text-primary hover:text-secondary transition-colors">+91 79873 82998</a>
+              </p>
+
+              <p className="text-xs text-slate-500 font-semibold leading-relaxed">
+                Access credentials will be generated and sent via email <br /><strong className="text-slate-700">automatically</strong> after payment completion.
+              </p>
+            </div>
+          </form>
         </div>
       </div>
     </section>
@@ -1046,9 +845,6 @@ const Footer = () => (
       <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-semibold text-slate-500">
         <p>© {new Date().getFullYear()}, <a href="https://www.kawitabapat.com/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white underline underline-offset-4 decoration-slate-600 hover:decoration-white transition-all font-bold">Dr. Kawita Bapat</a>. All rights reserved.</p>
         <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-6 gap-y-2">
-          <div className="w-full text-center md:text-right mb-4 opacity-70">
-            <p className="text-[10px] font-bold uppercase tracking-widest">Course Fee: <sup className="text-[10px]">*</sup> International Payments | <sup className="text-[10px]">#</sup> Indian Payments</p>
-          </div>
           <Link href="/legal/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link>
           <Link href="/legal/terms" className="hover:text-primary transition-colors">Terms of Use</Link>
           <Link href="/legal/disclaimer" className="hover:text-primary transition-colors">Disclaimer</Link>
